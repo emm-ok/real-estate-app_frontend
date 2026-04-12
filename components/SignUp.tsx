@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import Loader from "./ui/Loader";
 import Link from "next/link";
-import Input from "./ui/Input";
+import Input from "./Input";
 import Image from "next/image";
 import image2 from "@/public/assets/real-estate-img3.jpg"
 import { useRouter } from "next/navigation";
@@ -28,6 +28,7 @@ const SignUp = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting, isValid, dirtyFields },
   } = useForm<FormValues>({
     resolver: zodResolver(signUpSchema),
@@ -49,6 +50,7 @@ const SignUp = () => {
       );
 
       toast.success(res.data.message || "Account created successfully");
+      reset();
     } catch (error: any) {
       console.error(error);
 
@@ -69,7 +71,7 @@ const SignUp = () => {
           <h2 className="text-2xl bg-linear-to-r from-orange-400 text-transparent to-green-500 bg-clip-text text-center flex items-center justify-center h-full">
             Sign Up, Browse, and Purchase Various Listings</h2>
         </div>
-        <div className="w-1/3 bg-neutral-900/90 text-white backdrop-blur-md p-8 rounded-md">
+        <div className="w-1/3 bg-neutral-900/90 text-white backdrop-blur-md p-8">
         {/* Header */}
         <div className='"mb-6 text-center'>
           <h1 className="text-2xl font-bold text-green-300">
@@ -232,7 +234,7 @@ const SignUp = () => {
         </div>
         <p className="text-center mt-6">
           Already have an account?{" "}
-          <Link href="/sign-in" className="font-medium text-green-300">
+          <Link href="/sign-in" className="font-medium text-green-300 hover:border-b-2 border-green-300">
             Sign In
           </Link>
         </p>

@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import Loader from "./ui/Loader";
 import Link from "next/link";
-import Input from "./ui/Input";
+import Input from "./Input";
 import Image from "next/image";
 import image2 from "@/public/assets/lotus-design-n-print-wRzBarqn3hs-unsplash.jpg";
 import { apiUrl } from "./SignUp";
@@ -27,6 +27,7 @@ const Login = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting, isValid, dirtyFields },
   } = useForm<FormValues>({
     resolver: zodResolver(signInSchema),
@@ -46,6 +47,7 @@ const Login = () => {
       );
 
       toast.success(res.data.message || "Login successful");
+      reset();
     } catch (error: any) {
       console.error(error);
 
@@ -68,7 +70,7 @@ const Login = () => {
           </h2>
         </div>
         {/* <Image src={image2} width={400} height={500} alt="Login image" className="object-cover w-50 md:w-full" /> */}
-        <div className="w-1/3 bg-neutral-900/90 text-white backdrop-blur-md p-8 rounded-md">
+        <div className="w-1/3 bg-neutral-900/90 text-white backdrop-blur-md p-8">
           {/* Header */}
           <div className='"mb-6 text-center'>
             <h1 className="text-2xl font-bold text-green-300">Login</h1>
@@ -146,7 +148,7 @@ const Login = () => {
                 </p>
               )}
             </div>
-            <Link href="/forgot-password" className="mt-4">
+            <Link href="/forgot-password" className="mt-4 hover:border-b-2 transition">
               Forgot Password?
             </Link>
 
@@ -163,7 +165,7 @@ const Login = () => {
           {/* Footer for Login */}
           <p className="text-center mt-6">
             Don&apos;t have an account?{" "}
-            <Link href="/sign-up" className="font-medium text-green-300">
+            <Link href="/sign-up" className="font-medium text-green-300 hover:border-b-2 border-green-300">
               Sign Up
             </Link>
           </p>
