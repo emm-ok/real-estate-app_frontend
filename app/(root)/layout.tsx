@@ -1,15 +1,18 @@
-import Footer from '@/components/Footer'
-import Navbar from '@/components/Navbar'
-import React from 'react'
+import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
+import ProtectedRoute from "@/components/ProtectedRoute";
+import React from "react";
 
-const layout = ({ children }: Readonly<{children: React.ReactNode }>) => {
+const layout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   return (
-    <main className='font-mono'>
+    <main className="">
+      {/* <ProtectedRoute> */}
         <Navbar />
         {children}
         <Footer />
+      {/* </ProtectedRoute> */}
     </main>
-  )
-}
+  );
+};
 
-export default layout
+export default layout;

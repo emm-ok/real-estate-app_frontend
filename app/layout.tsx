@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter } from "next/font/google";
+import { Geist, Geist_Mono, Inter, Montserrat } from "next/font/google";
 import "./globals.css";
-// import RouteLoader from "@/components/ui/RouteLoader";
 import { Toaster } from "sonner";
 import { cn } from "@/lib/utils";
+import { AuthProvider } from "@/context/AuthContext";
+import ConfirmProvider from "@/context/providers/ConfirmProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,7 +16,16 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'})
+const inter = Inter({
+  variable: "--font-sans",
+  weight: ["400", "700"],
+});
+
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  variable: "--font-heading",
+  weight: ["400", "700"],
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -31,11 +41,15 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={cn("h-full", "antialiased", "text-xs", geistMono.variable, "font-sans", geist.variable)}
+      className={cn("h-full", "antialiased", "text-xs")}
     >
-      <body className="min-h-full flex flex-col">
+      <body className={`min-h-full flex flex-col ${inter.variable}`}>
         <Toaster position="top-left" />
-        {children}
+        <AuthProvider>
+          <ConfirmProvider>
+            {children}
+          </ConfirmProvider>
+        </AuthProvider>
       </body>
     </html>
   );

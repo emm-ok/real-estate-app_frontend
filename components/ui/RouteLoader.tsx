@@ -14,7 +14,7 @@ const RouteLoader = () => {
 
     if(!loading) return null;
   return (
-    <div className='fixed inset-0 z-50 flex items-center justify-center bg-white/20 backdrop-blur'>
+    <div className='fixed inset-0 z-50 flex items-center justify-center bg-gray-500/20 backdrop-blur-md'>
         <PageLoader />
     </div>
   )

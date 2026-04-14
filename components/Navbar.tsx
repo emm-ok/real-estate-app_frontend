@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -9,12 +9,48 @@ import { navLinks } from "@/lib/navLinks";
 import { usePathname } from "next/navigation";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useAuth } from "@/context/AuthContext";
+import Logout from "./Logout";
+import ProfileDropDown from "./ui/ProfileDropDown";
+import Loader from "./ui/Loader";
 
 const Navbar = () => {
-  const [openDropDown, setOpenDropDown] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileDropDown, setMobileDropDown] = useState<string | null>(null);
+  const [openDropDown, setOpenDropDown] = useState<string | null>(null);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const profileRef = useRef<HTMLDivElement | null>(null);
+  const { user, logout, loading } = useAuth();
+
   const pathname = usePathname();
+  console.log("user", user)
+
+  useEffect(() => {
+    setMobileOpen(false);
+    setMobileDropDown(null);
+  }, [pathname]);
+
+  useEffect(() => {
+    function handleOutsideClick(event: MouseEvent){
+      if(!profileRef.current || !profileRef.current.contains(event.target as Node)){
+        setOpenDropDown(null);
+        setProfileOpen(false)
+      }
+    }
+
+    document.addEventListener("mousedown", handleOutsideClick);
+
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
+  }, [])
+
+  const getInitials = (name: string = "") => {
+    const parts = name.trim().split(" ");
+    if (parts.length === 0) return "";
+    if (parts.length === 1) return parts[0][0]?.toUpperCase() || "";
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  };
+
+  const initials = getInitials(user?.name);
 
   const isActive = (href: string) =>
     pathname === href || pathname?.startsWith(href + "/");
@@ -55,7 +91,11 @@ const Navbar = () => {
                   }`}
                 >
                   {link.name}{" "}
-                  {openDropDown === link.name ? <ChevronUp size={10} /> : <ChevronDown size={10} />}
+                  {openDropDown === link.name ? (
+                    <ChevronUp size={10} />
+                  ) : (
+                    <ChevronDown size={10} />
+                  )}
                 </Link>
 
                 {/* Destop DropDown */}
@@ -119,9 +159,10 @@ const Navbar = () => {
               </svg>
             </button>
 
-            <Link href="/sign-in" className="bg-neutral-800 px-4 py-2 text-white font-medium rounded-lg">Login</Link>
-            {/* {!user ? (
-              <Link href="/login">Login</Link>
+            {!user && !loading ? (
+              <Link href="/sign-in">Login</Link>
+            ) : user && loading ? (
+              <Loader />
             ) : (
               <ProfileDropDown
                 profileRef={profileRef}
@@ -129,10 +170,8 @@ const Navbar = () => {
                 user={user}
                 profileOpen={profileOpen}
                 setProfileOpen={setProfileOpen}
-                setRedirecting={setRedirecting}
-                confirm={confirm}
               />
-            )} */}
+            )}
           </div>
         </div>
       </div>
@@ -148,56 +187,57 @@ const Navbar = () => {
             className="absolute top-15 w-full z-10 md:hidden overflow-hidden bg-white"
           >
             <div className="flex flex-col p-4 space-y-2">
-                {navLinks.map((link) => (
-                    <div key={link.name} className="flex flex-col">
+              {navLinks.map((link) => (
+                <div key={link.name} className="flex flex-col">
+                  {/* DropDown Links Button */}
+                  <div className="flex items-center justify-between">
+                    <Link href={link.href}>{link.name}</Link>
+                    <button
+                      onClick={() =>
+                        setMobileDropDown((prev) =>
+                          prev === link.name ? null : link.name,
+                        )
+                      }
+                      className="flex justify-between items-center py-2 font-medium text-gray-700"
+                    >
+                      {mobileDropDown === link.name ? (
+                        <ChevronUp size={16} />
+                      ) : (
+                        <ChevronDown size={16} />
+                      )}
+                    </button>
+                  </div>
 
-                        {/* DropDown Links Button */}
-                        <div className="flex items-center justify-between">
-                            <Link href={link.href}>{link.name}</Link>
-                            <button 
-                            onClick={() => setMobileDropDown((prev) => 
-                                prev === link.name ? null : link.name,
-                            )}
-                            className="flex justify-between items-center py-2 font-medium text-gray-700"
-                        >
-                            {mobileDropDown === link.name ? (
-                                <ChevronUp size={16} />
-                            ): (
-                                <ChevronDown size={16} />
-                            )}
-                        </button>
-                        </div>
+                  {/* Sub Links */}
+                  <AnimatePresence>
+                    {mobileDropDown === link.name && (
+                      <motion.div
+                        layout
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        className="pl-4 flex flex-col"
+                      >
+                        {link.subLinks.map((sub) => (
+                          <Link
+                            key={sub.name}
+                            href={`${link.href}/${sub.href}`}
+                            onClick={() => {
+                              setMobileOpen(false);
+                              setMobileDropDown(null);
+                            }}
+                            className="py-1 text-sm text-gray-600 hover:text-primary"
+                          >
+                            {sub.name}
+                          </Link>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ))}
 
-                        {/* Sub Links */}
-                        <AnimatePresence>
-                            {mobileDropDown === link.name && (
-                                <motion.div
-                                    layout
-                                    initial={{ height: 0, opacity: 0 }}
-                                    animate={{ height: "auto", opacity: 1 }}
-                                    exit={{ height: 0, opacity: 0 }}
-                                    className="pl-4 flex flex-col"
-                                >
-                                    {link.subLinks.map((sub) => (
-                                        <Link
-                                            key={sub.name}
-                                            href={`${link.href}/${sub.href}`}
-                                            onClick={() => {
-                                                setMobileOpen(false)
-                                                setMobileDropDown(null)
-                                            }}
-                                            className="py-1 text-sm text-gray-600 hover:text-primary"
-                                        >
-                                            {sub.name}
-                                        </Link>
-                                    ))}
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-                    </div>
-                ))}
-
-                {/* {user && <Logout />} */}
+              {user && <Logout />}
             </div>
           </motion.div>
         )}

@@ -11,10 +11,10 @@ import Link from "next/link";
 import Input from "./Input";
 import Image from "next/image";
 import image2 from "@/public/assets/lotus-design-n-print-wRzBarqn3hs-unsplash.jpg";
-import { apiUrl } from "./SignUp";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { api } from "@/lib/api";
+import GoogleAppleButton from "./ui/GoogleAppleButton";
 
 type FormValues = z.infer<typeof signInSchema>;
 
@@ -40,13 +40,14 @@ const Login = () => {
 
     try {
       const res = await api.post(
-        `${apiUrl}/auth/login`,{ 
+        `/auth/login`,{ 
           email: data.email, 
           password: data.password,
         },
       );
 
       toast.success(res.data.message || "Login successful");
+      router.push("/")
       reset();
     } catch (error: any) {
       console.error(error);
@@ -62,21 +63,21 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 font-mono">
+    <div className="min-h-screen flex items-center justify-center px-4">
       <div className="w-full flex justify-center overflow-hidden rounded-md">
-        <div className="bg-gray-900/50 text-white p-4 w-1/3">
+        <div className="hidden md:block bg-gray-900/50 text-white p-4 w-1/3">
           <h2 className="text-2xl bg-linear-to-r from-orange-400 text-transparent to-green-500 bg-clip-text flex items-center justify-center h-full">
             Login and Browse Various Listings
           </h2>
         </div>
         {/* <Image src={image2} width={400} height={500} alt="Login image" className="object-cover w-50 md:w-full" /> */}
-        <div className="w-1/3 bg-neutral-900/90 text-white backdrop-blur-md p-8">
+        <div className="w-full md:w-1/3 bg-neutral-900/90 text-white backdrop-blur-md p-8">
           {/* Header */}
           <div className='"mb-6 text-center'>
             <h1 className="text-2xl font-bold text-green-300">Login</h1>
             <p className=" mt-1">Sign in to continue to your account</p>
           </div>
-          {/* <GoogleAppleButton /> */}
+          <GoogleAppleButton />
 
           {/* Divider */}
           <div className="flex items-center my-6">

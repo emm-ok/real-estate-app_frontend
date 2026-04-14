@@ -1,19 +1,11 @@
 import React from "react";
-import { Home, ListChecks, MapPin, Search } from "lucide-react";
+import { Home, MapPin, Search } from "lucide-react";
 
 const RootPage = () => {
   return (
     <main className="w-full">
       <section className="relative flex items-center justify-center min-h-screen bg-image bg-fixed">
-        {/* <Image
-        src="/assets/real-estate-img3.jpg"
-        width={300}
-        height={300}
-        alt="bag image"
-        className="object-cover w-full h-full"
-      /> */}
-
-        <div className="absolute inset-0 bg-black/60 border"></div>
+        <div className="absolute inset-0 bg-black/60"></div>
 
         <div className="z-20 text-center">
           <div className="text-white text-center">
@@ -24,29 +16,29 @@ const RootPage = () => {
               Buy, rent, or invest in real estate effortlessly.
             </p>
           </div>
-          <div className="hidden md:flex gap-2 rounded-xl p-4 mt-4 bg-neutral-800/50">
+          <div className="hidden md:flex gap-2 rounded-xl p-4 mt-4 bg-white">
             <div className="flex items-center gap-2">
-              <Search color="white" size={18} />
+              <Search size={18} />
               <input
                 type="text"
                 placeholder="Name"
-                className="bg-white/70 outline-none rounded p-2"
+                className="focus:outline-none focus:ring-1 focus:ring-black rounded p-2"
               />
             </div>
             <div className="flex items-center gap-2">
-              <MapPin color="white" size={18} />
+              <MapPin size={18} />
               <input
                 type="text"
                 placeholder="Location"
-                className="bg-white/70 outline-none rounded p-2"
+                className="focus:outline-none focus:ring-1 focus:ring-black rounded p-2"
               />
             </div>
             <div className="flex items-center gap-2">
-              <Home color="white" size={18} />
+              <Home size={18} />
               <input
                 type="text"
                 placeholder="Listing type"
-                className="bg-white/70 outline-none rounded p-2"
+                className="focus:outline-none focus:ring-1 focus:ring-black rounded p-2"
               />
             </div>
             <button className="bg-black text-white font-medium flex gap-2 px-4 py-2 rounded-lg">
