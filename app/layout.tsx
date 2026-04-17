@@ -44,7 +44,7 @@ export default function RootLayout({
       className={cn("h-full", "antialiased", "text-xs")}
     >
       <body className={`min-h-full flex flex-col ${inter.variable}`}>
-        <Toaster position="top-left" />
+        <Toaster position="top-left" theme="dark" />
         <AuthProvider>
           <ConfirmProvider>
             {children}

@@ -1,16 +1,19 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import type { User } from "@/types";
+import type { LoginCredentials, RegisterCredentials, User } from "@/types";
 import React from "react";
 import { api } from "@/lib/api";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  logout: () => Promise<void>
+  fetchUser: () => Promise<void>;
+  logout: () => Promise<void>;
+  isLoggingOut: boolean;
 }
 const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -19,7 +22,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const router = useRouter();
+  // const searchParams = useSearchParams();
 
   const fetchUser = async () => {
     try {
@@ -28,23 +33,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     } catch (error: any) {
       setUser(null);
       console.error("Fetch User error", error?.response?.data || error.message);
-    } finally{
+    } finally {
       setLoading(false);
     }
   };
+
+  const logout = async () => {
+    setIsLoggingOut(true);
+    try {
+      const res = await api.post(`/auth/logout`);
+      toast.success(res.data.message);
+      router.push("/sign-in");
+    } catch (error: any) {
+      console.error(error.messsage);
+    } finally{
+      setIsLoggingOut(false);
+    }
+  };
+
   useEffect(() => {
     fetchUser();
   }, []);
 
-  const logout = async() => {
-    const res = await api.post(`/auth/logout`);
-    setUser(null)
-    toast.success(res.data.message);
-    router.push("/sign-in");
-  }
-
   return (
-    <AuthContext.Provider value={{ user, loading, logout }}>
+    <AuthContext.Provider value={{ user, loading, logout, fetchUser, isLoggingOut}}>
       {children}
     </AuthContext.Provider>
   );

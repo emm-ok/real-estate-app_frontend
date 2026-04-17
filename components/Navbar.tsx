@@ -3,12 +3,12 @@ import React, { useEffect, useRef, useState } from "react";
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { AnimatePresence, motion } from "framer-motion";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 import logo from "@/assets/logo2.png";
 import { navLinks } from "@/lib/navLinks";
-import { usePathname } from "next/navigation";
-import { ChevronDown, ChevronUp } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
 import { useAuth } from "@/context/AuthContext";
 import Logout from "./Logout";
 import ProfileDropDown from "./ui/ProfileDropDown";
@@ -20,10 +20,10 @@ const Navbar = () => {
   const [openDropDown, setOpenDropDown] = useState<string | null>(null);
   const [profileOpen, setProfileOpen] = useState(false);
   const profileRef = useRef<HTMLDivElement | null>(null);
-  const { user, logout, loading } = useAuth();
+  const { user, loading } = useAuth();
 
   const pathname = usePathname();
-  console.log("user", user)
+  console.log("user", user);
 
   useEffect(() => {
     setMobileOpen(false);
@@ -31,17 +31,20 @@ const Navbar = () => {
   }, [pathname]);
 
   useEffect(() => {
-    function handleOutsideClick(event: MouseEvent){
-      if(!profileRef.current || !profileRef.current.contains(event.target as Node)){
+    function handleOutsideClick(event: MouseEvent) {
+      if (
+        !profileRef.current ||
+        !profileRef.current.contains(event.target as Node)
+      ) {
         setOpenDropDown(null);
-        setProfileOpen(false)
+        setProfileOpen(false);
       }
     }
 
     document.addEventListener("mousedown", handleOutsideClick);
 
     return () => document.removeEventListener("mousedown", handleOutsideClick);
-  }, [])
+  }, []);
 
   const getInitials = (name: string = "") => {
     const parts = name.trim().split(" ");
@@ -159,11 +162,20 @@ const Navbar = () => {
               </svg>
             </button>
 
-            {!user && !loading ? (
-              <Link href="/sign-in">Login</Link>
-            ) : user && loading ? (
-              <Loader />
-            ) : (
+            {/* {!user && (
+              
+            )} */}
+            {!user && !loading && (
+              <Link
+                href="/sign-in"
+                className="px-4 py-2 bg-neutral-800 rounded-md text-white"
+              >
+                Login
+              </Link>
+            )}
+            {loading && <Loader />}
+
+            {user && (
               <ProfileDropDown
                 profileRef={profileRef}
                 initials={initials}

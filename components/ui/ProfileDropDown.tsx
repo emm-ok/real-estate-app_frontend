@@ -20,6 +20,7 @@ const ProfileDropDown = ({
   profileOpen,
   setProfileOpen,
 }) => {
+  console.log(user)
   return (
     <div className="relative" ref={profileRef}>
       <button 
@@ -42,11 +43,11 @@ const ProfileDropDown = ({
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="absolute right-0 bg-white mt-2 shadow-lg rounded-bl-md rounded-br-md p-4 w-60"
+            className="absolute right-0 bg-white mt-2 shadow-lg rounded-bl-md rounded-br-md p-4 max-w-md overflow-hidden"
           >
             <Link
-              href={`/dashboard/${user.role}`}
-              className="flex gap-2 py-2 hover:bg-gray-100"
+              href={`/dashboard/${user?.role}`}
+              className="flex gap-2 items-center py-2 hover:bg-gray-100"
             >
               <button>
                 <Avatar className="w-12 h-12 font-bold">
@@ -70,15 +71,15 @@ const ProfileDropDown = ({
             </Link>
             <div className="w-full h-[.1px] bg-gray-300 mb-2" />
             <Link
-              href={`/dashboard/${user.role}/profile`}
+              href={`/dashboard/${user?.role}/profile`}
               className="flex gap-1 items-center py-2 text-xs hover:bg-gray-100"
             >
               <User size={18} />
               Profile
             </Link>
-            {user.role === "user" && (
+            {user?.role === "user" && (
               <Link
-                href={`${user.role}/become-agent`}
+                href={`${user?.role}/become-agent`}
                 className="flex gap-1 items-center py-2 text-xs hover:bg-gray-100 rounded-full border border-gray-300"
               >
                 <UserCheck2Icon size={18} />
@@ -101,7 +102,7 @@ const ProfileDropDown = ({
               Dashboard
             </Link>
             <Link
-              href={`/dashboard/${user.role}/settings`}
+              href={`/dashboard/${user?.role}/settings`}
               className="flex gap-1 items-center py-2 text-xs hover:bg-gray-100 mb-2"
             >
               <Settings size={18} />

@@ -11,18 +11,21 @@ import Link from "next/link";
 import Input from "./Input";
 import Image from "next/image";
 import image2 from "@/public/assets/lotus-design-n-print-wRzBarqn3hs-unsplash.jpg";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { api } from "@/lib/api";
 import GoogleAppleButton from "./ui/GoogleAppleButton";
+import { useAuth } from "@/context/AuthContext";
+import PageLoader from "./ui/PageLoader";
 
 type FormValues = z.infer<typeof signInSchema>;
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [redirecting, setRedirecting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const searchParams = useSearchParams();
   const router = useRouter();
+  const { fetchUser } = useAuth();
 
   const {
     register,
@@ -36,18 +39,16 @@ const Login = () => {
 
   const onSubmit = async (data: FormValues) => {
     setError(null);
-    setRedirecting(true);
-
     try {
-      const res = await api.post(
-        `/auth/login`,{ 
-          email: data.email, 
-          password: data.password,
-        },
-      );
+      const res = await api.post(`/auth/login`, {
+        email: data.email,
+        password: data.password,
+      });
 
+      const redirectPath = searchParams?.get("redirect") || "/";
+      router.push(redirectPath);
+      await fetchUser();
       toast.success(res.data.message || "Login successful");
-      router.push("/")
       reset();
     } catch (error: any) {
       console.error(error);
@@ -57,9 +58,7 @@ const Login = () => {
       } else {
         setError("Network error. Try again.");
       }
-    } finally {
-      setRedirecting(false);
-    }
+    } 
   };
 
   return (
@@ -78,7 +77,7 @@ const Login = () => {
             <p className=" mt-1">Sign in to continue to your account</p>
           </div>
           <GoogleAppleButton />
-
+          
           {/* Divider */}
           <div className="flex items-center my-6">
             <div className="grow border-t" />
@@ -87,10 +86,7 @@ const Login = () => {
           </div>
           <p className="text-red-400 font-medium m-1">{error}</p>
           {/* Email & Password Section*/}
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="space-y-4"
-          >
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="relative">
               {/* Email */}
               <Input
@@ -149,7 +145,10 @@ const Login = () => {
                 </p>
               )}
             </div>
-            <Link href="/forgot-password" className="mt-4 hover:border-b-2 transition">
+            <Link
+              href="/forgot-password"
+              className="mt-4 hover:border-b-2 transition"
+            >
               Forgot Password?
             </Link>
 
@@ -166,7 +165,10 @@ const Login = () => {
           {/* Footer for Login */}
           <p className="text-center mt-6">
             Don&apos;t have an account?{" "}
-            <Link href="/sign-up" className="font-medium text-green-300 hover:border-b-2 border-green-300">
+            <Link
+              href="/sign-up"
+              className="font-medium text-green-300 hover:border-b-2 border-green-300"
+            >
               Sign Up
             </Link>
           </p>

@@ -15,6 +15,8 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { api } from "@/lib/api";
 import GoogleAppleButton from "./ui/GoogleAppleButton";
+import { useAuth } from "@/context/AuthContext";
+import PageLoader from "./ui/PageLoader";
 
 type FormValues = z.infer<typeof signUpSchema>;
 
@@ -22,8 +24,8 @@ const SignUp = () => {
   const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [redirecting, setRedirecting] = useState(false);
   const router = useRouter();
+  const {fetchUser} = useAuth();
 
   const {
     register,
@@ -37,7 +39,6 @@ const SignUp = () => {
 
   const onSubmit = async (data: FormValues) => {
     setError(null);
-    setRedirecting(true);
 
     try {
       const res = await api.post(
@@ -48,7 +49,8 @@ const SignUp = () => {
           password: data.password,
         },
       );
-
+      router.push("/");
+      await fetchUser();
       toast.success(res.data.message || "Account created successfully");
       reset();
     } catch (error: any) {
@@ -59,9 +61,7 @@ const SignUp = () => {
       } else {
         setError("Network error. Try again.");
       }
-    } finally {
-      setRedirecting(false);
-    }
+    } 
   };
 
   return (
