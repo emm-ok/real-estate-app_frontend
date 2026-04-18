@@ -2,7 +2,8 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { AlertTriangle, CheckCircle, Info, Loader, Trash } from "lucide-react";
+import { AlertTriangle, CheckCircle, Info, Trash } from "lucide-react";
+import Loader from "../../components/ui/Loader";
 
 type ConfirmVariant = "info" | "warning" | "danger" | "success";
 
