@@ -11,7 +11,7 @@ import Link from "next/link";
 import Input from "./Input";
 import Image from "next/image";
 import image2 from "@/public/assets/real-estate-img3.jpg"
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { api } from "@/lib/api";
 import GoogleAppleButton from "./ui/GoogleAppleButton";
@@ -24,6 +24,7 @@ const SignUp = () => {
   const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const searchParams = useSearchParams();
   const router = useRouter();
   const {fetchUser} = useAuth();
 
@@ -49,7 +50,8 @@ const SignUp = () => {
           password: data.password,
         },
       );
-      router.push("/");
+      const redirectPath = searchParams?.get("redirect") || "/";
+      router.push(redirectPath);
       await fetchUser();
       toast.success(res.data.message || "Account created successfully");
       reset();
