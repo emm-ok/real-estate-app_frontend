@@ -10,7 +10,7 @@ import {
   User,
   UserCheck2Icon,
 } from "lucide-react";
-import Logout from "../Logout";
+import Logout from "@/components/auth/Logout";
 import { AnimatePresence, motion } from "framer-motion";
 
 const ProfileDropDown = ({

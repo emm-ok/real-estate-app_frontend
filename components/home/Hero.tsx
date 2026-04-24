@@ -1,6 +1,6 @@
 // components/Hero.jsx
-import SearchBar from "@/components/SearchBar";
-import image from "../public/assets/elite-prop-hmlP-v0vJ5o-unsplash.jpg"
+import SearchBar from "@/components/home/SearchBar";
+import image from "@/public/assets/elite-prop-hmlP-v0vJ5o-unsplash.jpg"
 import Image from "next/image";
 
 const Hero = () => {
@@ -26,6 +26,7 @@ const Hero = () => {
           width={500}
           height={500}
           alt="house"
+          loading="eager"
           className="rounded-xl shadow-lg"
         />
       </div>

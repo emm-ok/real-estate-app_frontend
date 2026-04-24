@@ -1,5 +1,5 @@
 import { Search } from "lucide-react";
-import CustomSelect from "./CustomSelect";
+import CustomSelect from "@/components/ui/CustomSelect";
 
 // components/SearchBar.jsx
 const PropertyOptions = ["Apartment", "Land", "Villa"];

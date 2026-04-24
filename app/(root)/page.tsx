@@ -1,7 +1,7 @@
-import FeaturedListings from "@/components/FeaturedListings";
-import Hero from "@/components/Hero";
-import Newsletter from "@/components/Newsletter";
-import WhyChoose from "@/components/WhyChoose";
+import FeaturedListings from "@/components/listing/FeaturedListings";
+import Hero from "@/components/home/Hero";
+import Newsletter from "@/components/home/Newsletter";
+import WhyChoose from "@/components/home/WhyChoose";
 
 const RootPage = async () => {
   return (

@@ -1,8 +1,8 @@
-import { AgentDocumentType } from "@/types";
+import { CompanyDocumentType } from "@/types";
 import { api, apiError } from "./api";
 
-const baseUrl = `/agent-application`;
-export const getAllApplications = async () => {
+const baseUrl = `/company-application`;
+export const getCompanyApplications = async () => {
   try {
     const res = await api.get(`${baseUrl}/all-applications`);
     return res.data;
@@ -10,7 +10,7 @@ export const getAllApplications = async () => {
     apiError(error);
   }
 };
-export const getApplicationById = async (applicationId: string) => {
+export const getCompanyApplicationById = async (applicationId: string) => {
     try {
     const res = await api.get(`${baseUrl}/${applicationId}`);
     return res.data;
@@ -26,7 +26,7 @@ export const verifyApplicationDocument = async (docId: string) => {
     apiError(error);
   }
 };
-export const approveAgentApplication = async (applicationId: string) => {
+export const approveCompanyApplication = async (applicationId: string) => {
     try {
     const res = await api.patch(`${baseUrl}/${applicationId}/approve`);
     return res.data;
@@ -34,7 +34,7 @@ export const approveAgentApplication = async (applicationId: string) => {
     apiError(error);
   }
 };
-export const rejectAgentApplication = async (applicationId: string) => {
+export const rejectCompanyApplication = async (applicationId: string) => {
     try {
     const res = await api.patch(`${baseUrl}/${applicationId}/reject`);
     return res.data;
@@ -43,7 +43,7 @@ export const rejectAgentApplication = async (applicationId: string) => {
   }
 };
 
-export const createAgentApplication = async () => {
+export const createCompanyApplication = async () => {
     try {
     const res = await api.post(`${baseUrl}`);
     return res.data;
@@ -51,7 +51,7 @@ export const createAgentApplication = async () => {
     apiError(error);
   }
 };
-export const getMyAgentApplication = async () => {
+export const getMyCompanyApplication = async () => {
     try {
     const res = await api.get(`${baseUrl}`);
     return res.data;
@@ -59,7 +59,7 @@ export const getMyAgentApplication = async () => {
     apiError(error);
   }
 };
-export const updateAgentApplication = async () => {
+export const updateCompanyApplication = async () => {
     try {
     const res = await api.put(`${baseUrl}`);
     return res.data;
@@ -67,7 +67,7 @@ export const updateAgentApplication = async () => {
     apiError(error);
   }
 };
-export const uploadAgentDocument = async (type: AgentDocumentType) => {
+export const uploadCompanyDocument = async (type: CompanyDocumentType) => {
     try {
     const res = await api.post(`${baseUrl}/doc/${type}`);
     return res.data;
@@ -75,7 +75,7 @@ export const uploadAgentDocument = async (type: AgentDocumentType) => {
     apiError(error);
   }
 };
-export const deleteAgentDocument = async (type: AgentDocumentType) => {
+export const deleteCompanyDocument = async (type: CompanyDocumentType) => {
     try {
     const res = await api.delete(`${baseUrl}/doc/${type}`);
     return res.data;
@@ -83,7 +83,7 @@ export const deleteAgentDocument = async (type: AgentDocumentType) => {
     apiError(error);
   }
 };
-export const deleteAgentApplication = async () => {
+export const deleteCompanyApplication = async () => {
     try {
     const res = await api.delete(`${baseUrl}/delete`);
     return res.data;
@@ -91,7 +91,7 @@ export const deleteAgentApplication = async () => {
     apiError(error);
   }
 };
-export const submitAgentApplication = async () => {
+export const submitCompanyApplication = async () => {
     try {
     const res = await api.post(`${baseUrl}/submit`);
     return res.data;

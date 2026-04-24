@@ -6,17 +6,17 @@ import { CheckCircle, Eye, EyeOff, Lock, LockKeyholeIcon, Mail, User } from "luc
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
-import Loader from "./ui/Loader";
+import Loader from "@/components/ui/Loader";
 import Link from "next/link";
-import Input from "./Input";
+import Input from "@/components/Input";
 import Image from "next/image";
 import image2 from "@/public/assets/real-estate-img3.jpg"
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { api } from "@/lib/api";
-import GoogleAppleButton from "./ui/GoogleAppleButton";
+import GoogleAppleButton from "@/components/ui/GoogleAppleButton";
 import { useAuth } from "@/context/AuthContext";
-import PageLoader from "./ui/PageLoader";
+import PageLoader from "@/components/ui/PageLoader";
 
 type FormValues = z.infer<typeof signUpSchema>;
 
