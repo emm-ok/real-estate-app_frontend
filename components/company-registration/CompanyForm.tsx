@@ -52,35 +52,35 @@ const CompanyForm = () => {
   };
   return (
     <AnimateStep>
-      <div className="p-8">
+      <div className="p-8 flex flex-col justify-between items-center w-full">
         <p>
           Step {step + 1} of {steps.length}
         </p>
         <CompanyStepper steps={steps} currentStep={step} />
-      </div>
 
-      <div className="flex justify-between gap-4">
-        <div className="space-y-8 w-1/3 hidden md:block">
-          <Image
-            src={agentImage}
-            width={500}
-            height={500}
-            alt="Agent Application img"
-            className="w-[300px] rounded-xl"
-          />
+        <div className="flex justify-center items-center gap-4 w-3/4">
+          <div className="space-y-8 w-1/3 hidden md:block">
+            <Image
+              src={agentImage}
+              width={500}
+              height={500}
+              alt="Agent Application img"
+              className="w-[300px] rounded-xl"
+            />
 
-          <div className="space-y-6">
-            <div className="flex items-center gap-2 mb-2">
-              <CheckCircle size={15} />
-              <h2 className="text-sm">Secure & Verified</h2>
+            <div className="space-y-6">
+              <div className="flex items-center gap-2 mb-2">
+                <CheckCircle size={15} />
+                <h2 className="text-sm">Secure & Verified</h2>
+              </div>
+              <p className="text-xs">
+                Your information is protected and will be verified
+              </p>
             </div>
-            <p className="text-xs">
-              Your information is protected and will be verified
-            </p>
           </div>
-        </div>
 
-      <StepLayout>{renderStep()}</StepLayout>
+          <StepLayout>{renderStep()}</StepLayout>
+        </div>
       </div>
     </AnimateStep>
   );

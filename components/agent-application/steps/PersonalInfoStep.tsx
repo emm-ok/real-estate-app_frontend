@@ -17,7 +17,7 @@ export default function PersonalInfoStep({ onNext, onChange }: any) {
 
   return (
     <AnimateStep>
-      <div className="flex flex-col justify-between w-full h-full gap-8 md:w-1/2">
+      <div className="flex flex-col justify-between w-full h-full gap-8 md:w-3/4">
         <div className="flex flex-col justify-between h-full gap-4">
           <label
             htmlFor="name"
@@ -29,7 +29,7 @@ export default function PersonalInfoStep({ onNext, onChange }: any) {
             type="text"
             id="name"
             placeholder="Full Name"
-            className="w-full border border-gray-300 rounded-md px-4 py-2"
+            className="w-full border border-gray-400 rounded-md px-4 py-2"
             onChange={(e) => setForm({ ...form, name: e.target.value })}
           />
 
@@ -43,7 +43,7 @@ export default function PersonalInfoStep({ onNext, onChange }: any) {
             type="email"
             id="email"
             placeholder="Email"
-            className="w-full border border-gray-300 rounded-md px-4 py-2"
+            className="w-full border border-gray-400 rounded-md px-4 py-2"
             onChange={(e) => setForm({ ...form, email: e.target.value })}
           />
 
@@ -55,14 +55,14 @@ export default function PersonalInfoStep({ onNext, onChange }: any) {
           </label>
 
           <div className="flex items-center">
-            <select className="border border-gray-300 p-1 mr-2">
+            <select className="border border-gray-400 p-1 mr-2">
               <option value="">Country</option>
             </select>
             <Input
               type="number"
               id="number"
               placeholder="(555) 123-4567"
-              className="w-full border border-gray-300 rounded-md px-4 py-2"
+              className="w-full border border-gray-400 rounded-md px-4 py-2"
             />
           </div>
           <label
@@ -75,10 +75,10 @@ export default function PersonalInfoStep({ onNext, onChange }: any) {
             type="date"
             id="date"
             placeholder="MM/DD/YYYY"
-            className="w-full border border-gray-300 rounded-md px-4 py-2"
+            className="w-full border border-gray-400 rounded-md px-4 py-2"
           />
 
-          <select className="w-full border border-gray-300 p-1 mr-2">
+          <select className="w-full border border-gray-400 p-1 mr-2">
             <option value="">Select your nationality</option>
           </select>
         </div>

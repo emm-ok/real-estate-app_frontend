@@ -5,7 +5,7 @@ const Review = ({onBack}) => {
 
   return (
     <AnimateStep>
-    <div className="flex flex-col justify-between w-full h-full gap-8 md:w-1/2">
+    <div className="flex flex-col justify-between w-full h-full gap-8 md:w-3/4">
       <h2>Review Step</h2>
       <div className="flex justify-between mt-4">
         <button

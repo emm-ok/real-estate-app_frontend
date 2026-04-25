@@ -7,9 +7,9 @@ interface Props {
 
 const AgentStepper = ({ steps, currentStep }: Props) => {
   return (
-    <div className="">
+    <div className="w-full">
       <div className="text-center text-xl font-extrabold">{steps[currentStep]}</div>
-      <div className="flex my-10 w-full">
+      <div className="flex my-10 w-full ml-24">
         {steps.map((step, index) => (
         <div key={index} className="flex-1 flex items-center">
           <div

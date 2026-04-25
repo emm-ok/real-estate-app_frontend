@@ -7,9 +7,9 @@ interface Props {
 
 const CompanyStepper = ({ steps, currentStep }: Props) => {
   return (
-    <div className="">
+    <div className="w-full">
       <div className="text-center text-xl font-extrabold">{steps[currentStep]}</div>
-      <div className="flex my-10 w-full">
+      <div className="flex my-10 w-full ml-24">
         {steps.map((step, index) => (
         <div key={index} className="flex-1 flex items-center">
           <div
@@ -19,7 +19,7 @@ const CompanyStepper = ({ steps, currentStep }: Props) => {
             {index + 1}
           </div>
           {index !== steps.length - 1 && (
-            <div className={`flex-1 h-[2px] ${index < currentStep ? "bg-black" : "bg-gray-400"} ${index == steps.length - 1 && "hidden"} transition-all`} />
+            <div className={`flex-1 h-[2px] ${index < currentStep ? "bg-black" : "bg-gray-400"} ${index == steps.length - 1 && "hidden"}`} />
           )}
         </div>
       ))}

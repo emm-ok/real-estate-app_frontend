@@ -9,7 +9,7 @@ import Loader from "../ui/Loader";
 import { useAuth } from "@/context/AuthContext";
 import { AgentApplication } from "@/types";
 
-const StartButton = ({ onStageChange }: { onStageChange: (stage: "requirements" | "registration") => void }) => {
+const StartButton = ({ onStageChange }: { onStageChange: (stage: "requirements" | "application") => void }) => {
   const [application, setApplication] = useState<AgentApplication | null>(null);
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
@@ -41,12 +41,12 @@ const StartButton = ({ onStageChange }: { onStageChange: (stage: "requirements" 
       //   // router.push(`/agent-application?app=${application.id}`);
       //   console.log("Application",application);
       //   console.log("ApplicationId",application.id);
-      //   onStageChange("registration");
+      //   onStageChange("application");
       //   return;
       // }
       // const res = await createAgentApplication();
       // router.push(`/agent-application?app=${res.id}`)
-      onStageChange("registration");
+      onStageChange("application");
       // console.log(res.id);
     } finally {
       setTimeout(() => {

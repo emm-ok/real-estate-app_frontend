@@ -16,13 +16,13 @@ const Professional = ({ onNext, onBack, onChange }) => {
 
   return (
     <AnimateStep>
-      <div className="flex flex-col justify-between w-full h-full gap-8 md:w-1/2">
+      <div className="flex flex-col justify-between w-full h-full gap-8 md:w-3/4">
         <div className="flex flex-col justify-between gap-4">
           <label htmlFor="">License Number</label>
           <Input
             type="text"
             placeholder="ANSAOS30492JKD"
-            className="w-full border border-gray-300 rounded-md px-4 py-2"
+            className="w-full border border-gray-400 rounded-md px-4 py-2"
             onChange={(e) =>
               setForm({ ...form, licenseNumber: e.target.value })
             }
@@ -31,13 +31,13 @@ const Professional = ({ onNext, onBack, onChange }) => {
           <Input
             type="text"
             placeholder="USA"
-            className="w-full border border-gray-300 rounded-md px-4 py-2"
+            className="w-full border border-gray-400 rounded-md px-4 py-2"
             onChange={(e) =>
               setForm({ ...form, licenseCountry: e.target.value })
             }
           />
           <div className="grid grid-cols-2 gap-4">
-            <select className="border border-gray-300 rounded-md">
+            <select className="border border-gray-400 rounded-md">
               <option value="">Specialization</option>
             </select>
 
@@ -48,7 +48,7 @@ const Professional = ({ onNext, onBack, onChange }) => {
               <Input
                 type="text"
                 placeholder="10"
-                className="w-full border border-gray-300 rounded-md px-4 py-2"
+                className="w-full border border-gray-400 rounded-md px-4 py-2"
                 onChange={(e) =>
                   setForm({ ...form, yearsExperience: e.target.value })
                 }
@@ -59,14 +59,14 @@ const Professional = ({ onNext, onBack, onChange }) => {
           <Input
             type="text"
             placeholder="Vortex"
-            className="w-full border border-gray-300 rounded-md px-4 py-2"
+            className="w-full border border-gray-400 rounded-md px-4 py-2"
             onChange={(e) => setForm({ ...form, companyName: e.target.value })}
           />
           <label htmlFor="">Website</label>
           <Input
             type="text"
             placeholder="https://www.example.com"
-            className="w-full border border-gray-300 rounded-md px-4 py-2"
+            className="w-full border border-gray-400 rounded-md px-4 py-2"
             onChange={(e) => setForm({ ...form, website: e.target.value })}
           />
         </div>

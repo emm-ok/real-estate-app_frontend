@@ -55,14 +55,14 @@ const ApplicationForm = () => {
   };
   return (
     <AnimateStep>
-      <div className="p-8 h-screen">
+      <div className="p-8 flex flex-col justify-between items-center w-full">
         <p>
           Step {step + 1} of {steps.length}
         </p>
         <AgentStepper steps={steps} currentStep={step} />
 
-        <div className="flex justify-between gap-4">
-          <div className="space-y-8 w-1/3 hidden md:block">
+        <div className="flex justify-center items-center gap-4 w-3/4">
+          <div className="space-y-8 hidden md:block">
             <Image
               src={agentImage}
               width={500}

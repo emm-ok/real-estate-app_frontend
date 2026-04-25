@@ -1,8 +1,8 @@
 "use client";
 
-import StartButton from "@/components/become-agent/StartButton";
-import StatusCard from "@/components/become-agent/StatusCard";
 import CompanyForm from "@/components/company-registration/CompanyForm";
+import StartButton from "@/components/company-registration/StartButton";
+import StatusCard from "@/components/company-registration/StatusCard";
 import { ChartBar, CheckCircle, User, UserCircle } from "lucide-react";
 import React, { useState } from "react";
 
@@ -78,18 +78,16 @@ const RegisterCompanyPage = () => {
         </div>
 
         {/* Requirements */}
-        <div className="bg-white rounded-2xl p-6 w-full">
-          <h3 className="font-semibold mb-4">Requirements</h3>
+        <div className="bg-white rounded-2xl p-6 w-full px-10 my-24">
+          <h3 className="font-semibold mb-4 text-2xl">Requirements</h3> 
 
-          <ul className="text-xl text-gray-800 flex justify-between items-center">
-            {items.map((item, index) => (
+          <ul className="text-xl text-gray-800 grid md:grid-cols-2 gap-10">
+            {items.map((item) => (
               <li
                 key={item}
                 className="flex items-center gap-4 shadow-md p-10 rounded-xl"
               >
-                <span className="size-10 flex justify-center items-center rounded-full bg-green-500 text-white">
-                  {index + 1}
-                </span>
+                <CheckCircle size={18} color="green" />
                 {item}
               </li>
             ))}

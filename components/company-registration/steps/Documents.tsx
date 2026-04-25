@@ -2,7 +2,7 @@
 
 import AnimateStep from "@/components/layout/AnimateStep";
 import { Input } from "@/components/ui/input";
-import { File } from "lucide-react";
+import { Upload } from "lucide-react";
 import React, { useState } from "react";
 
 const docs = [
@@ -23,21 +23,21 @@ const Documents = ({ onNext, onBack, onChange }) => {
 
   return (
     <AnimateStep>
-      <div className="flex flex-col justify-between w-full h-full gap-8 md:w-1/2">
+      <div className="flex flex-col justify-between w-full h-full gap-8 md:w-3/4">
         <div className="flex flex-col justify-between gap-4">
           {docs.map((doc) => (
             <div
               key={doc.title}
-              className="flex justify-between items-center p-4 gap-4 border border-gray-300 rounded-md"
+              className="flex justify-between items-center p-4 gap-4 border border-gray-400 rounded-md"
             >
               <div className="flex items-center gap-4">
-                <File />
+                <Upload size={25} />
                 <div className="space-y-4">
                   <h2 className="font-bold text-gray-700">{doc.title}</h2>
                   <p>{doc.description}</p>
                 </div>
               </div>
-              <button className="p-4 border border-gray-300 rounded-md h-14">
+              <button className="px-4 py-3 text-sm border border-gray-400 rounded-md">
                 <Input type="file" name={doc.name} hidden />
                 Upload
               </button>

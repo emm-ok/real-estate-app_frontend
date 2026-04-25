@@ -58,30 +58,34 @@ const BecomeAgentPage = () => {
           </p>
         </div>
 
-        {packages.map((pkg) => {
-          const Icon = pkg.icon;
-          return (
-            <div
-              key={pkg.header}
-              className={`flex border border-gray-300 rounded-xl mb-4 justify-start items-center p-4 gap-8`}
-            >
-              <div className={`p-4 rounded-xl ${pkg.color}`}>{Icon}</div>
-              <div className="flex flex-col gap-4">
-                <h2 className="font-bold">{pkg.header}</h2>
-                <p className="text-gray-500">{pkg.description}</p>
+        <div className="grid md:grid-cols-3">
+          {packages.map((pkg, index) => {
+            return (
+              <div
+                key={pkg.header}
+                className={`flex ${index === 0 && "border border-gray-300"} rounded-xl mb-4 justify-start items-center p-4 gap-8`}
+              >
+                <div className={`p-4 rounded-xl ${pkg.color}`}>{pkg.icon}</div>
+                <div className="flex flex-col gap-4">
+                  <h2 className="font-bold">{pkg.header}</h2>
+                  <p className="text-gray-500">{pkg.description}</p>
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
 
         {/* Requirements */}
-        <div className="bg-white rounded-2xl p-6 shadow">
-          <h3 className="font-semibold mb-4">Requirements</h3>
+        <div className="bg-white rounded-2xl p-6 w-full px-10 my-24">
+          <h3 className="font-semibold mb-4 text-2xl">Requirements</h3>
 
-          <ul className="space-y-2 text-sm text-gray-600">
+          <ul className="text-xl text-gray-800 grid md:grid-cols-2 gap-10">
             {items.map((item) => (
-              <li key={item} className="flex items-center gap-2">
-                <CheckCircle size={16} className="text-green-500" />
+              <li
+                key={item}
+                className="flex items-center gap-4 shadow-md p-10 rounded-xl"
+              >
+                <CheckCircle size={18} color="green" />
                 {item}
               </li>
             ))}
