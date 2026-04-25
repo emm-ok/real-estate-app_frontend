@@ -3,8 +3,7 @@
 import { useAuth } from "@/context/AuthContext";
 import { useConfirm } from "@/context/providers/ConfirmProvider";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
-import PageLoader from "./ui/PageLoader";
+import PageLoader from "@/components/ui/PageLoader";
 
 const Logout = () => {
   const confirm = useConfirm();

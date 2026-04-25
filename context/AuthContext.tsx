@@ -1,12 +1,12 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import type { LoginCredentials, RegisterCredentials, User } from "@/types";
+import type { User } from "@/types";
 import React from "react";
 import { api } from "@/lib/api";
 import { toast } from "sonner";
 import Cookies from "js-cookie";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 interface AuthContextType {
   user: User | null;
@@ -24,7 +24,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [loading, setLoading] = useState(true);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const router = useRouter();
-  // const searchParams = useSearchParams();
 
   const fetchUser = async () => {
     try {

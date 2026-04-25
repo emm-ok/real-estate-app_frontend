@@ -10,9 +10,9 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import logo from "@/assets/logo2.png";
 import { navLinks } from "@/lib/navLinks";
 import { useAuth } from "@/context/AuthContext";
-import Logout from "./Logout";
-import ProfileDropDown from "./ui/ProfileDropDown";
-import Loader from "./ui/Loader";
+import Logout from "@/components/auth/Logout";
+import ProfileDropDown from "../ui/ProfileDropDown";
+import Loader from "../ui/Loader";
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
