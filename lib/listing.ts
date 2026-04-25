@@ -1,3 +1,4 @@
+import { ListingType } from "@/types";
 import { api, apiError } from "./api";
 
 export const createListing = async () => {
@@ -12,6 +13,7 @@ export const getAllListings = async (params: {
   page?: number;
   limit?: number;
   search?: string;
+  type?: ListingType;
   bedrooms?: number;
   bathrooms?: number;
   minPrice?: number;

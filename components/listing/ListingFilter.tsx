@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { ListingType } from "@/types";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 interface Props {
   onFilter: (filters: any) => void;
@@ -8,19 +10,35 @@ interface Props {
 
 export default function ListingFilters({ onFilter }: Props) {
   const [search, setSearch] = useState("");
-  const [type, setType] = useState("");
+  const [type, setType] = useState<ListingType | string>("");
   const [bedrooms, setBedrooms] = useState<number | "">("");
   const [bathrooms, setBathrooms] = useState<number | "">("");
   const [minPrice, setMinPrice] = useState<number | "">("");
   const [maxPrice, setMaxPrice] = useState<number | "">("");
 
+  const router = useRouter();
+  const params = new URLSearchParams();
+  // const handleApply = () => {
+  //   onFilter({ page: 2, search, type, bedrooms, bathrooms, minPrice, maxPrice });
+  // };
+
   const handleApply = () => {
-    onFilter({ page: 2, search, type, bedrooms, bathrooms, minPrice, maxPrice });
-  };
+    if(search) params.set("search", search);
+    if(type) params.set("type", type);
+    if(bedrooms) params.set("bedrooms", String(bedrooms));
+    if(bathrooms) params.set("bathrooms", String(bathrooms));
+    if(minPrice) params.set("minPrice", String(minPrice));
+    if(maxPrice) params.set("maxPrice", String(maxPrice));
+
+    router.push(`?${params.toString()}`);
+    onFilter(params);
+  }
 
   return (
-    <div className="bg-white p-4 rounded-2xl shadow-sm border mb-6">
-      <div className="grid gap-4 md:grid-cols-4">
+    <div className="bg-white p-4 rounded-2xl shadow-sm mb-6">
+      <form 
+        onSubmit={handleApply}
+        className="grid gap-4 md:grid-cols-4">
         
         {/* Search */}
         <input
@@ -28,14 +46,14 @@ export default function ListingFilters({ onFilter }: Props) {
           placeholder="Search location..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+          className="border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
         />
 
         {/* Property Type */}
         <select
           value={type}
           onChange={(e) => setType(e.target.value)}
-          className="border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+          className="border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
         >
           <option value="">All Types</option>
           <option value="apartment">Apartment</option>
@@ -47,7 +65,7 @@ export default function ListingFilters({ onFilter }: Props) {
         <select
           value={bedrooms}
           onChange={(e) => setBedrooms(e.target.value ? Number(e.target.value) : "")}
-          className="border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+          className="border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
         >
           <option value="">Any Bedrooms</option>
           <option value="1">1</option>
@@ -58,7 +76,7 @@ export default function ListingFilters({ onFilter }: Props) {
         <select
           value={bathrooms}
           onChange={(e) => setBathrooms(e.target.value ? Number(e.target.value) : "")}
-          className="border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+          className="border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
         >
           <option value="">Any Bathrooms</option>
           <option value="1">1</option>
@@ -71,23 +89,23 @@ export default function ListingFilters({ onFilter }: Props) {
         value={minPrice}
         onChange={(e) => setMinPrice(e.target.value ? Number(e.target.value) : "" )}
         placeholder="Min Price"
-        className="border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+        className="border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
          />
           <input
         value={maxPrice}
         onChange={(e) => setMaxPrice(e.target.value ? Number(e.target.value) : "" )}
         placeholder="Max Price"
-        className="border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+        className="border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
          />
 
         {/* Button */}
         <button
-          onClick={handleApply}
+          type="submit"
           className="bg-primary text-white rounded-xl px-4 py-2 hover:bg-primary/90 transition"
         >
           Apply Filters
         </button>
-      </div>
+      </form>
     </div>
   );
 }

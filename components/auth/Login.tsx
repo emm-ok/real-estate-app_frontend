@@ -64,7 +64,7 @@ const Login = () => {
     <div className="min-h-screen flex items-center justify-center px-4">
       <div className="w-full flex justify-center overflow-hidden rounded-md">
         <div className="hidden md:block bg-gray-900/50 text-white p-4 w-1/3">
-          <h2 className="text-2xl bg-linear-to-r from-orange-400 text-transparent to-green-500 bg-clip-text flex items-center justify-center h-full">
+          <h2 className="text-3xl bg-linear-to-r from-orange-600 text-transparent to-green-700 bg-clip-text flex items-center justify-center h-full">
             Login and Browse Various Listings
           </h2>
         </div>
@@ -72,7 +72,7 @@ const Login = () => {
         <div className="w-full md:w-1/3 bg-neutral-900/90 text-white backdrop-blur-md p-8">
           {/* Header */}
           <div className='"mb-6 text-center'>
-            <h1 className="text-2xl font-bold text-green-300">Login</h1>
+            <h1 className="text-2xl font-bold">Login</h1>
             <p className=" mt-1">Sign in to continue to your account</p>
           </div>
           <GoogleAppleButton />
@@ -88,8 +88,10 @@ const Login = () => {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="relative">
               {/* Email */}
+              <label htmlFor="email" className="font-bold">Email</label>
               <Input
                 icon={Mail}
+                id="email"
                 type="email"
                 placeholder="example@gmail.com"
                 {...register("email")}
@@ -113,8 +115,10 @@ const Login = () => {
 
             {/* Password */}
             <div className="relative">
+              <label htmlFor="password" className="font-bold">Password</label>
               <Input
                 icon={Lock}
+                id="password"
                 type={showPassword ? "text" : "password"}
                 {...register("password")}
                 placeholder="Password"

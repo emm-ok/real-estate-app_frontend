@@ -4,20 +4,20 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import Skeleton from "../ui/Skeleton";
-import { createAgentApplication, getMyAgentApplication } from "@/lib/agent-application";
+import { createCompanyApplication, getMyCompanyApplication } from "@/lib/company-application";
 import Loader from "../ui/Loader";
 import { useAuth } from "@/context/AuthContext";
-import { AgentApplication } from "@/types";
+import { CompanyApplication } from "@/types";
 
-const StartButton = ({ onStageChange }: { onStageChange: (stage: "requirements" | "registration") => void }) => {
-  const [application, setApplication] = useState<AgentApplication | null>(null);
+const StartButton = ({ onStageChange }: { onStageChange: (stage: "requirements" | "application") => void }) => {
+  const [application, setApplication] = useState<CompanyApplication | null>(null);
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
 
   useEffect(() => {
     const fetch = async () => {
       try {
-        const data = await getMyAgentApplication();
+        const data = await getMyCompanyApplication();
         console.log("Application", data.application);
         setApplication(data.application);
       } finally {
@@ -41,12 +41,12 @@ const StartButton = ({ onStageChange }: { onStageChange: (stage: "requirements" 
       //   // router.push(`/agent-application?app=${application.id}`);
       //   console.log("Application",application);
       //   console.log("ApplicationId",application.id);
-      //   onStageChange("registration");
+      //   onStageChange("application");
       //   return;
       // }
-      // const res = await createAgentApplication();
+      // const res = await createCompanyApplication();
       // router.push(`/agent-application?app=${res.id}`)
-      onStageChange("registration");
+      onStageChange("application");
       // console.log(res.id);
     } finally {
       setTimeout(() => {

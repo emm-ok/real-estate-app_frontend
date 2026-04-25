@@ -1,19 +1,19 @@
 "use client"
 
-import { getMyAgentApplication } from "@/lib/agent-application";
-import { AgentApplication, ApplicationStatus } from "@/types";
+import { getMyCompanyApplication } from "@/lib/company-application";
+import { CompanyApplication, ApplicationStatus } from "@/types";
 import React, { useEffect, useState } from "react";
 import Skeleton from "../ui/Skeleton";
 
 const StatusCard = () => {
-  const [application, setApplication] = useState<AgentApplication | null>(null);
+  const [application, setApplication] = useState<CompanyApplication | null>(null);
   const [loading, setLoading] = useState(true);
   
 
   useEffect(() => {
     const fetch = async () => {
       try {
-        const data = await getMyAgentApplication();
+        const data = await getMyCompanyApplication();
         console.log("Application", data);
         setApplication(data.application);
       } finally {
