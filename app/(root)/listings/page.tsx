@@ -13,10 +13,10 @@ export interface FilterOptions {
   limit?: number;
   search?: string
   type?: ListingType;
-  bedrooms?: number | string;
-  bathrooms?: number | string;
-  minPrice?: number | string;
-  maxPrice?: number | string;
+  bedrooms?: number;
+  bathrooms?: number;
+  minPrice?: number;
+  maxPrice?: number;
 }
 
 export default function ListingsPage() {
@@ -24,38 +24,36 @@ export default function ListingsPage() {
   const [loading, setLoading] = useState(true);
   const searchParams = useSearchParams();
 
-  const fetchListings = async (params: FilterOptions = {}) => {
+  const fetchListings = async (params: FilterOptions) => {
     setLoading(true);
 
     try {
       const data = await getAllListings(params);
-      setListings(data);
+      setListings(Array.isArray(data) ? data : []);
       console.log("Listings", data);
-    } catch (error) {
-      console.error(error);
     } finally {   
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    const filters = {
-      search: searchParams?.get("search") || "",
-      type: searchParams?.get("type") || "",
-      bedrooms: searchParams?.get("bedrooms") || "",
-      bathrooms: searchParams?.get("bathrooms") || "",
-      minPrice: searchParams?.get("minPrice") || "",
-      maxprice: searchParams?.get("maxprice") || "",
-    }
+    const filters: FilterOptions = {
+      search: searchParams?.get("search") || undefined,
+      type: (searchParams?.get("type") || undefined) as ListingType | undefined,
+      bedrooms: searchParams?.get("bedrooms") ? Number(searchParams.get("bedrooms")) : undefined,
+      bathrooms: searchParams?.get("bathrooms") ? Number(searchParams.get("bathrooms")) : undefined,
+      minPrice: searchParams?.get("minPrice") ? Number(searchParams.get("minPrice")) : undefined,
+      maxPrice: searchParams?.get("maxPrice") ? Number(searchParams.get("maxPrice")) : undefined,
+    };
     fetchListings(filters);
-  }, []);
+  }, [searchParams]);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8 min-h-screen">
+    <div className="max-w-4xl mx-auto px-4 py-8 min-h-screen">
       <ListingFilters onFilter={fetchListings} />
 
       {loading ? (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-10">
           {[...Array(8)].map((_, i) => (
             <ListingSkeleton key={i} />
           ))}

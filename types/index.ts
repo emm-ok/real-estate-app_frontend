@@ -95,6 +95,17 @@ export type ListingMediaType = "IMAGE" | "VIDEO";
 
 export type Provider = "LOCAL" | "GOOGLE" | "APPLE";
 
+export interface FilterOptions {
+  page?: number;
+  limit?: number;
+  search?: string;
+  type?: ListingType;
+  bedrooms?: number;
+  bathrooms?: number;
+  minPrice?: number;
+  maxPrice?: number;
+}
+
 export interface Agent {
   id: string;
   userId: string;

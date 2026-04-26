@@ -45,69 +45,93 @@ const BecomeAgentPage = () => {
 
   console.log(user);
   return (
-    <div className="flex justify-center items-center w-full p-8">
-      <div
-        className={`${stage === "requirements" ? "block" : "hidden"} w-full`}
-      >
-        {/* Hero */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-semibold">Become a Verified Agent</h1>
-          <p className="text-gray-500 mt-2">
-            Join our network of trusted real estate professionals and grow your
-            business with us.
-          </p>
+  <div className="mx-auto px-6 py-10 space-y-10">
+    {stage === "requirements" && (
+      <>
+        {/* HERO */}
+        <div className="bg-gradient-to-br from-neutral-900 to-neutral-800 text-white rounded-3xl p-10 flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="max-w-xl">
+            <h1 className="text-4xl font-semibold leading-tight">
+              Become a Verified Real Estate Agent
+            </h1>
+            <p className="text-neutral-300 mt-4 text-lg">
+              Join a premium network of trusted agents, gain more visibility,
+              and close deals faster with our platform.
+            </p>
+          </div>
+
+          <button
+            onClick={() => setStage("application")}
+            className="bg-white text-black px-6 py-3 rounded-xl font-medium hover:scale-[1.03] transition"
+          >
+            Get Started
+          </button>
         </div>
 
-        <div className="grid md:grid-cols-3">
-          {packages.map((pkg, index) => {
-            return (
+        {/* BENEFITS */}
+        <div>
+          <h2 className="text-2xl font-semibold mb-6">
+            Why join our agent network?
+          </h2>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {packages.map((pkg) => (
               <div
                 key={pkg.header}
-                className={`flex ${index === 0 && "border border-gray-300"} rounded-xl mb-4 justify-start items-center p-4 gap-8`}
+                className="bg-white border border-gray-200 rounded-2xl p-6 hover:shadow-md transition"
               >
-                <div className={`p-4 rounded-xl ${pkg.color}`}>{pkg.icon}</div>
-                <div className="flex flex-col gap-4">
-                  <h2 className="font-bold">{pkg.header}</h2>
-                  <p className="text-gray-500">{pkg.description}</p>
+                <div
+                  className={`w-12 h-12 flex items-center justify-center rounded-xl mb-4 ${pkg.color}`}
+                >
+                  {pkg.icon}
                 </div>
+
+                <h3 className="font-semibold text-lg">{pkg.header}</h3>
+                <p className="text-gray-500 mt-2 text-sm">
+                  {pkg.description}
+                </p>
               </div>
-            );
-          })}
-        </div>
-
-        {/* Requirements */}
-        <div className="bg-white rounded-2xl p-6 w-full px-10 my-24">
-          <h3 className="font-semibold mb-4 text-2xl">Requirements</h3>
-
-          <ul className="text-xl text-gray-800 grid md:grid-cols-2 gap-10">
-            {items.map((item) => (
-              <li
-                key={item}
-                className="flex items-center gap-4 shadow-md p-10 rounded-xl"
-              >
-                <CheckCircle size={18} color="green" />
-                {item}
-              </li>
             ))}
-          </ul>
+          </div>
         </div>
 
-        {/* Application Status */}
-        <StatusCard />
+        {/* REQUIREMENTS */}
+        <div className="bg-white border border-gray-200 rounded-3xl p-8">
+          <h3 className="text-2xl font-semibold mb-6">
+            Requirements to get started
+          </h3>
 
-        <StartButton onStageChange={setStage} />
-      </div>
+          <div className="grid md:grid-cols-2 gap-6">
+            {items.map((item) => (
+              <div
+                key={item}
+                className="flex items-center gap-4 p-4 rounded-xl border border-gray-100 bg-gray-50"
+              >
+                <div className="bg-green-100 text-green-600 p-2 rounded-lg">
+                  <CheckCircle size={18} />
+                </div>
 
-      <div className={`${stage === "application" ? "block" : "hidden"} w-full`}>
-        {/* Application Form */}
-        <div className="bg-white rounded-2xl p-6 shadow">
-          <h3 className="font-semibold mb-4">Application Form</h3>
-          {/* Form fields would go here */}
-          <ApplicationForm />
+                <p className="text-gray-700 text-sm">{item}</p>
+              </div>
+            ))}
+          </div>
         </div>
+
+        {/* STATUS + CTA */}
+        <div className="grid md:grid-cols-2 gap-6">
+          <StatusCard />
+          <StartButton onStageChange={setStage} />
+        </div>
+      </>
+    )}
+
+    {stage === "application" && (
+      <div className="rounded-3xl p-8">
+        <ApplicationForm onStageChange={setStage} />
       </div>
-    </div>
-  );
+    )}
+  </div>
+);
 };
 
 export default BecomeAgentPage;

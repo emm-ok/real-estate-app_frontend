@@ -2,6 +2,7 @@
 
 import AnimateStep from "@/components/layout/AnimateStep";
 import { Input } from "@/components/ui/input";
+import { inputClass } from "@/lib/utils";
 import React, { useState } from "react";
 
 const Professional = ({ onNext, onBack, onChange }) => {
@@ -16,13 +17,14 @@ const Professional = ({ onNext, onBack, onChange }) => {
 
   return (
     <AnimateStep>
-      <div className="flex flex-col justify-between w-full h-full gap-8 md:w-3/4">
-        <div className="flex flex-col justify-between gap-4">
+      <div className="flex flex-col justify-between w-full h-full gap-8">
+        <h2 className="text-xl font-semibold">Agent Details</h2>
+        <div className="bg-white space-y-4">
           <label htmlFor="">License Number</label>
           <Input
             type="text"
             placeholder="ANSAOS30492JKD"
-            className="w-full border border-gray-400 rounded-md px-4 py-2"
+            className={inputClass}
             onChange={(e) =>
               setForm({ ...form, licenseNumber: e.target.value })
             }
@@ -31,13 +33,13 @@ const Professional = ({ onNext, onBack, onChange }) => {
           <Input
             type="text"
             placeholder="USA"
-            className="w-full border border-gray-400 rounded-md px-4 py-2"
+            className={inputClass}
             onChange={(e) =>
               setForm({ ...form, licenseCountry: e.target.value })
             }
           />
           <div className="grid grid-cols-2 gap-4">
-            <select className="border border-gray-400 rounded-md">
+            <select className={inputClass}>
               <option value="">Specialization</option>
             </select>
 
@@ -48,7 +50,7 @@ const Professional = ({ onNext, onBack, onChange }) => {
               <Input
                 type="text"
                 placeholder="10"
-                className="w-full border border-gray-400 rounded-md px-4 py-2"
+                className={inputClass}
                 onChange={(e) =>
                   setForm({ ...form, yearsExperience: e.target.value })
                 }
@@ -59,14 +61,14 @@ const Professional = ({ onNext, onBack, onChange }) => {
           <Input
             type="text"
             placeholder="Vortex"
-            className="w-full border border-gray-400 rounded-md px-4 py-2"
+            className={inputClass}
             onChange={(e) => setForm({ ...form, companyName: e.target.value })}
           />
           <label htmlFor="">Website</label>
           <Input
             type="text"
             placeholder="https://www.example.com"
-            className="w-full border border-gray-400 rounded-md px-4 py-2"
+            className={inputClass}
             onChange={(e) => setForm({ ...form, website: e.target.value })}
           />
         </div>
@@ -80,7 +82,7 @@ const Professional = ({ onNext, onBack, onChange }) => {
               onChange({ form });
               onNext();
             }}
-            className="bg-neutral-800 text-white px-6 py-2 rounded-md"
+            className="bg-neutral-800 cursor-pointer text-white px-6 py-3 rounded-md hover:bg-black transition"
           >
             Continue
           </button>

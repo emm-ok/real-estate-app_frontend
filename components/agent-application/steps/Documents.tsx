@@ -23,24 +23,25 @@ const Documents = ({ onNext, onBack, onChange }) => {
 
   return (
     <AnimateStep>
-      <div className="flex flex-col justify-between w-full h-full gap-8 md:w-3/4">
-        <div className="flex flex-col justify-between gap-4">
+      <div className="flex flex-col justify-between w-full h-full gap-8">
+        <h2 className="text-xl font-semibold">Upload Documents</h2>
+        <div className="bg-white space-y-6">
           {docs.map((doc) => (
             <div
               key={doc.title}
-              className="flex justify-between items-center p-4 gap-4 border border-gray-400 rounded-md"
+              className="border border-dashed border-gray-300 rounded-xl p-5 flex justify-between items-center hover:bg-gray-50 transition"
             >
               <div className="flex items-center gap-4">
                 <Upload size={25} />
                 <div className="space-y-4">
-                  <h2 className="font-bold text-gray-700">{doc.title}</h2>
-                  <p>{doc.description}</p>
+                  <h2 className="font-medium">{doc.title}</h2>
+                  <p className="text-sm text-gray-500">{doc.description}</p>
                 </div>
               </div>
-              <button className="px-4 py-3 text-sm border border-gray-400 rounded-md">
-                <Input type="file" name={doc.name} hidden />
+              <label className="cursor-pointer bg-black text-white px-4 py-2 rounded-lg text-sm">
                 Upload
-              </button>
+                <input type="file" className="hidden" />
+              </label>
             </div>
           ))}
         </div>
@@ -54,7 +55,7 @@ const Documents = ({ onNext, onBack, onChange }) => {
               onChange({ form });
               onNext();
             }}
-            className="bg-neutral-800 text-white px-6 py-2 rounded-md"
+            className="bg-neutral-800 cursor-pointer text-white px-6 py-3 rounded-md hover:bg-black transition"
           >
             Continue
           </button>

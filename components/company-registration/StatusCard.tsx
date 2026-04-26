@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { getMyCompanyApplication } from "@/lib/company-application";
 import { CompanyApplication, ApplicationStatus } from "@/types";
@@ -6,9 +6,10 @@ import React, { useEffect, useState } from "react";
 import Skeleton from "../ui/Skeleton";
 
 const StatusCard = () => {
-  const [application, setApplication] = useState<CompanyApplication | null>(null);
+  const [application, setApplication] = useState<CompanyApplication | null>(
+    null,
+  );
   const [loading, setLoading] = useState(true);
-  
 
   useEffect(() => {
     const fetch = async () => {
@@ -25,48 +26,51 @@ const StatusCard = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-between items-center shadow p-6">
-        <div>
-          <Skeleton className="w-50 h-3" />
-          <Skeleton className="w-30 h-3 mt-3" />
-        </div>
-        <Skeleton className="w-50 h-3" />
+      <div className="bg-white border border-gray-200 rounded-2xl p-6 space-y-3">
+        <Skeleton className="w-40 h-4" />
+        <Skeleton className="w-24 h-4" />
       </div>
     );
   }
 
   if (!application) {
-    return(
-      <div className="bg-white rounded-2xl shadow flex justify-between items-center">
-        <div>
-          <p className="text-sm text-gray-500">Your application</p>
-          <p className="font-semibold text-gray-500">No application</p>
-        </div>
-        <span>No Application</span>
+    return (
+      <div className="bg-white border border-gray-200 rounded-2xl p-6">
+        <p className="text-sm text-gray-500">Company Application</p>
+
+        <h3 className="text-lg font-semibold text-gray-800 mt-2">
+          Not Started
+        </h3>
+
+        <p className="text-sm text-gray-500 mt-2">
+          Your company is not yet registered in our system.
+        </p>
       </div>
-    )
-  };
+    );
+  }
 
   const statusColor: Record<ApplicationStatus, string> = {
-    DRAFT: "text-yellow-600",
-    PENDING: "text-blue-600",
-    APPROVED: "text-green-600",
-    REJECTED: "text-red-600",
+    DRAFT: "bg-yellow-100 text-yellow-700",
+    PENDING: "bg-blue-100 text-blue-700",
+    APPROVED: "bg-green-100 text-green-700",
+    REJECTED: "bg-red-100 text-red-700",
   };
-  
-  console.log("statusColor", statusColor[application.status])
-  return (
-    <div className="bg-white rounded-2xl shadow flex justify-between items-center p-8">
-      <div>
-        <p className="text-sm text-gray-500">Your application</p>
-        <p className={` font-semibold ${statusColor[application.status]}`}>
-          {application.status}
-        </p>
 
-        <span className="text-xs text-gray-400">
-          Created {new Date(application.createdAt).toLocaleDateString()}
+  return (
+    <div className="bg-white border border-gray-200 rounded-2xl p-6">
+      <p className="text-sm text-gray-500">Company Status</p>
+
+      <div className="mt-3 flex items-center gap-3">
+        <span
+          className={`px-3 py-1 rounded-full text-xs font-medium ${statusColor[application.status]}`}
+        >
+          {application.status}
         </span>
       </div>
+
+      <p className="text-xs text-gray-400 mt-4">
+        Submitted on {new Date(application.createdAt).toLocaleDateString()}
+      </p>
     </div>
   );
 };

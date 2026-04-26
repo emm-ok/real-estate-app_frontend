@@ -11,6 +11,8 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+export const inputClass = "w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-4 text-sm focus:ring-2 focus:ring-black/10 focus:border-gray-400 outline-none transition";
+
 
 export const listings = [
   {

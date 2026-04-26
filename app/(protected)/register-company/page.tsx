@@ -47,66 +47,87 @@ const RegisterCompanyPage = () => {
     "requirements",
   );
   return (
-    <div className="flex justify-center items-center w-full p-8">
-      <div
-        className={`${stage === "requirements" ? "block" : "hidden"} w-full`}
-      >
-        {/* Hero */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-semibold">Register your Company</h1>
-          <p className="text-gray-500 mt-2">
-            Create or registr your company with us and get opportunity to
-            showcase real estate assets to over 2 million users.
-          </p>
-        </div>
+    <div className=" mx-auto px-6 py-10 space-y-12">
+      {stage === "requirements" && (
+        <>
+          {/* HERO */}
+          <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-3xl p-10">
+            <h1 className="text-4xl font-semibold">Register Your Company</h1>
 
-        <div className="grid md:grid-cols-4">
-          {packages.map((pkg, index) => {
-            return (
+            <p className="text-slate-300 mt-4 max-w-2xl text-lg">
+              Join our verified business network and showcase your real estate
+              portfolio to millions of potential clients across the platform.
+            </p>
+
+            <div className="mt-6 flex gap-4">
+              <button
+                onClick={() => setStage("registration")}
+                className="bg-white text-black px-6 py-3 rounded-xl font-medium hover:scale-[1.03] transition"
+              >
+                Start Registration
+              </button>
+
+              <button className="border border-white/20 px-6 py-3 rounded-xl text-white hover:bg-white/10 transition">
+                Learn More
+              </button>
+            </div>
+          </div>
+
+          {/* VALUE GRID (Reworked packages) */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {packages.map((pkg) => (
               <div
                 key={pkg.header}
-                className={`flex ${index === 0 && "border border-gray-300"} rounded-xl mb-4 justify-start items-center p-4 gap-8`}
+                className="bg-white border border-gray-200 rounded-2xl p-6 hover:shadow-md transition"
               >
-                <div className={`p-4 rounded-xl ${pkg.color}`}>{pkg.icon}</div>
-                <div className="flex flex-col gap-4">
-                  <h2 className="font-bold">{pkg.header}</h2>
-                  <p className="text-gray-500">{pkg.description}</p>
+                <div
+                  className={`w-12 h-12 flex items-center justify-center rounded-xl mb-4 ${pkg.color}`}
+                >
+                  {pkg.icon}
                 </div>
+
+                <h3 className="font-semibold">{pkg.header}</h3>
+                <p className="text-gray-500 text-sm mt-2">{pkg.description}</p>
               </div>
-            );
-          })}
-        </div>
-
-        {/* Requirements */}
-        <div className="bg-white rounded-2xl p-6 w-full px-10 my-24">
-          <h3 className="font-semibold mb-4 text-2xl">Requirements</h3> 
-
-          <ul className="text-xl text-gray-800 grid md:grid-cols-2 gap-10">
-            {items.map((item) => (
-              <li
-                key={item}
-                className="flex items-center gap-4 shadow-md p-10 rounded-xl"
-              >
-                <CheckCircle size={18} color="green" />
-                {item}
-              </li>
             ))}
-          </ul>
-        </div>
+          </div>
 
+          {/* REQUIREMENTS (Structured + enterprise feel) */}
+          <div className="bg-white border border-gray-200 rounded-3xl p-8">
+            <h2 className="text-2xl font-semibold mb-6">
+              Verification Requirements
+            </h2>
+
+            <div className="grid md:grid-cols-2 gap-4">
+              {items.map((item) => (
+                <div
+                  key={item}
+                  className="flex items-center gap-4 p-4 rounded-xl bg-gray-50 border border-gray-100"
+                >
+                  <div className="bg-green-100 text-green-600 p-2 rounded-lg">
+                    <CheckCircle size={18} />
+                  </div>
+
+                  <p className="text-gray-700 text-sm">{item}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* STATUS + CTA GRID */}
+          <div className="grid md:grid-cols-2 gap-6">
             <StatusCard />
+            <StartButton onStageChange={setStage} />
+          </div>
+        </>
+      )}
 
-         <StartButton onStageChange={setStage} />
-      </div>
-
-      <div className={`${stage === "registration" ? "block" : "hidden"} w-full`}>
-        {/* Application Form */}
-        <div className="bg-white rounded-2xl p-6 shadow">
-          <h3 className="font-semibold mb-4">Application Form</h3>
-          {/* Form fields would go here */}
-          <CompanyForm />
+      {/* FORM STEP */}
+      {stage === "registration" && (
+        <div className="rounded-3xl p-8">
+          <CompanyForm onStageChange={setStage} />
         </div>
-      </div>
+      )}
     </div>
   );
 };

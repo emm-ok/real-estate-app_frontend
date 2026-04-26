@@ -2,6 +2,7 @@
 
 import AnimateStep from "@/components/layout/AnimateStep";
 import { Input } from "@/components/ui/input";
+import { inputClass } from "@/lib/utils";
 import React, { useState } from "react";
 
 const CompanyInfo = ({ onNext, onBack, onChange }) => {
@@ -18,42 +19,48 @@ const CompanyInfo = ({ onNext, onBack, onChange }) => {
 
   return (
     <AnimateStep>
-      <div className="flex flex-col justify-between w-full h-full gap-8 md:w-3/4">
-        <div className="flex flex-col justify-between gap-2">
+      <div className="flex flex-col justify-between w-full h-full gap-8">
+        <h2 className="text-xl font-semibold">Company Details</h2>
+        <div className="bg-white space-y-4">
           <label htmlFor="">Company Name</label>
           <Input
             type="text"
             placeholder="Vortex"
-            className="w-full border border-gray-400 rounded-md px-4 py-2"
-            onChange={(e) =>
-              setForm({ ...form, name: e.target.value })
-            }
+            className={inputClass}
+            onChange={(e) => setForm({ ...form, name: e.target.value })}
           />
           <label htmlFor="">Email</label>
           <Input
             type="email"
             placeholder="example@gmail.com"
-            className="w-full border border-gray-400 rounded-md px-4 py-2"
-            onChange={(e) =>
-              setForm({ ...form, email: e.target.value })
-            }
+            className={inputClass}
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
           />
-          <label htmlFor="">License Number</label>
-          <Input
-            type="number"
-            placeholder="NDS9J3402J3040J0324"
-            className="w-full border border-gray-400 rounded-md px-4 py-2"
-            onChange={(e) => setForm({ ...form, licenseNumber: e.target.value })}
-          />
-          <label htmlFor="">Registration Number</label>
-          <Input
-            type="number"
-            placeholder="NDS9J3402J3040J0324"
-            className="w-full border border-gray-400 rounded-md px-4 py-2"
-            onChange={(e) => setForm({ ...form, registrationNumber: e.target.value })}
-          />
-          <div className="grid grid-cols-2 gap-4">
-            <select className="border border-gray-400 rounded-md">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="">License Number</label>
+              <Input
+                type="number"
+                placeholder="NDS9J3402J3040J0324"
+                className={inputClass}
+                onChange={(e) =>
+                  setForm({ ...form, licenseNumber: e.target.value })
+                }
+              />
+            </div>
+            <div>
+              <label htmlFor="">Registration Number</label>
+              <Input
+                type="number"
+                placeholder="NDS9J3402J3040J0324"
+                className={inputClass}
+                onChange={(e) =>
+                  setForm({ ...form, registrationNumber: e.target.value })
+                }
+              />
+            </div>
+          </div>
+            <select className={inputClass}>
               <option value="">Type</option>
               <option value="llc">LLC</option>
             </select>
@@ -65,18 +72,15 @@ const CompanyInfo = ({ onNext, onBack, onChange }) => {
               <Input
                 type="text"
                 placeholder="https://www.vortex.com"
-                className="w-full border border-gray-400 rounded-md px-4 py-2"
-                onChange={(e) =>
-                  setForm({ ...form, website: e.target.value })
-                }
+                className={inputClass}
+                onChange={(e) => setForm({ ...form, website: e.target.value })}
               />
             </div>
-          </div>
           <label htmlFor="">Address</label>
           <Input
             type="text"
             placeholder="no1 ketunger street, luton, United Kingdom"
-            className="w-full border border-gray-400 rounded-md px-4 py-2"
+            className={inputClass}
             onChange={(e) => setForm({ ...form, address: e.target.value })}
           />
         </div>
@@ -90,7 +94,7 @@ const CompanyInfo = ({ onNext, onBack, onChange }) => {
               onChange({ form });
               onNext();
             }}
-            className="bg-neutral-800 text-white px-6 py-2 rounded-md"
+            className="bg-neutral-800 cursor-pointer text-white px-6 py-3 rounded-md hover:bg-black transition"
           >
             Continue
           </button>

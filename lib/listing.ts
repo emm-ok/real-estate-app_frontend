@@ -1,4 +1,4 @@
-import { ListingType } from "@/types";
+import { FilterOptions, Listing, ListingType } from "@/types";
 import { api, apiError } from "./api";
 
 export const createListing = async () => {
@@ -9,22 +9,18 @@ export const createListing = async () => {
     apiError(error);
   }
 };
-export const getAllListings = async (params: {
-  page?: number;
-  limit?: number;
-  search?: string;
-  type?: ListingType;
-  bedrooms?: number;
-  bathrooms?: number;
-  minPrice?: number;
-  maxPrice?: number;
-}) => {
+
+interface ListingResponse {
+  listing: Listing[];
+};
+
+export const getAllListings = async (params: FilterOptions): Promise<Listing[]> => {
   try {
-    const res = await api.get("/listing/all-listings", {
+    const res = await api.get<ListingResponse>("/listing/all-listings", {
       params,
     });
 
-    return res.data.listing;
+    return Array.isArray(res.data?.listing) ? res.data.listing : []
   } catch (error) {
     apiError(error);
     return [];

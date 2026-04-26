@@ -4,12 +4,19 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import Skeleton from "../ui/Skeleton";
-import { createAgentApplication, getMyAgentApplication } from "@/lib/agent-application";
+import {
+  createAgentApplication,
+  getMyAgentApplication,
+} from "@/lib/agent-application";
 import Loader from "../ui/Loader";
 import { useAuth } from "@/context/AuthContext";
 import { AgentApplication } from "@/types";
 
-const StartButton = ({ onStageChange }: { onStageChange: (stage: "requirements" | "application") => void }) => {
+const StartButton = ({
+  onStageChange,
+}: {
+  onStageChange: (stage: "requirements" | "application") => void;
+}) => {
   const [application, setApplication] = useState<AgentApplication | null>(null);
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
@@ -59,37 +66,27 @@ const StartButton = ({ onStageChange }: { onStageChange: (stage: "requirements" 
     return (
       <div className="flex flex-col justify-center items-center gap-6 mt-15 shadow p-6">
         <Skeleton className="w-50 h-3" />
-        <Skeleton className="w-175 h-12" />
+        <Skeleton className="w-96 md:w-175 h-12" />
       </div>
     );
   }
 
   return (
-    <div className="bg-white rounded-2xl p-8 shadow text-center space-y-4">
-      <p className="text-gray-600">Ready to start your verification</p>
+    <div className="bg-neutral-900 text-white rounded-2xl p-6 flex flex-col justify-between">
+      <div>
+        <h3 className="text-lg font-semibold">Ready to get verified?</h3>
+        <p className="text-sm text-neutral-400 mt-2">
+          Start your application and unlock access to premium listings and
+          clients.
+        </p>
+      </div>
 
       <button
-        onClick={handleStart}
-        disabled={isBlocked}
-        className={`w-full py-4 rounded-xl 
-                font-medium text-white transition-all 
-                ${
-                  isBlocked
-                    ? "opacity-50 cursor-not-allowed"
-                    : "bg-neutral-800 hover:scale-[1.02]"
-                }`}
+        onClick={() => onStageChange("application")}
+        className="mt-6 bg-white text-black py-3 rounded-xl font-medium hover:scale-[1.02] transition"
       >
-        {!application && "Start Application"}
-        {loading && <Loader text="Redirecting..." />}
-        {status === "DRAFT" && "Continue Application"}
-        {status === "PENDING" && "Under Review"}
-        {status === "APPROVED" && "Approved"}
-        {status === "REJECTED" && "Rejected"}
+        Start Application
       </button>
-
-      {isBlocked && (
-        <p className="text-xs text-gray-400">Application already active</p>
-      )}
     </div>
   );
 };
