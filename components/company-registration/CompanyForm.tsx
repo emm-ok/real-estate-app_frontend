@@ -10,25 +10,15 @@ import CompanyStepper from "./CompanyStepper";
 import { CheckCircle } from "lucide-react";
 import Review from "./steps/Review";
 import Documents from "./steps/Documents";
-
-const steps = [
-  "Personal Information",
-  "Contact Details",
-  "Company Info",
-  "Documents",
-  "Review",
-];
+import { useCompanyApplication } from "@/context/CompanyApplicationContext";
 
 const CompanyForm = ({
   onStageChange,
 }: {
   onStageChange: (stage: "requirements" | "registration") => void;
 }) => {
-  const [step, setStep] = useState(0);
+  const { nextStep, prevStep, step, steps } = useCompanyApplication();
   const [formData, setFormData] = useState([]);
-
-  const next = () => setStep((prev) => Math.min(prev + 1, steps.length - 1));
-  const prev = () => setStep((prev) => Math.max(prev - 1, 0));
 
   const updateData = () => {
     setFormData((prev) => ({ ...prev, ...formData }));
@@ -37,19 +27,19 @@ const CompanyForm = ({
   const renderStep = () => {
     switch (step) {
       case 0:
-        return <PersonalInfoStep onNext={next} onChange={updateData} />;
+        return <PersonalInfoStep onNext={nextStep} onChange={updateData} />;
       case 1:
         return (
-          <ContactDetail onNext={next} onBack={prev} onChange={updateData} />
+          <ContactDetail onNext={nextStep} onBack={prevStep} onChange={updateData} />
         );
       case 2:
         return (
-          <CompanyInfo onNext={next} onBack={prev} onChange={updateData} />
+          <CompanyInfo onNext={nextStep} onBack={prevStep} onChange={updateData} />
         );
       case 3:
-        return <Documents onNext={next} onBack={prev} onChange={updateData} />;
+        return <Documents onNext={nextStep} onBack={prevStep} onChange={updateData} />;
       case 4:
-        return <Review onBack={prev} />;
+        return <Review onBack={prevStep} />;
       default:
         return null;
     }

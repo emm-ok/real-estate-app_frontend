@@ -12,47 +12,31 @@ import Professional from "./steps/Professional";
 import Documents from "./steps/Documents";
 import Review from "./steps/Review";
 import AnimateStep from "../layout/AnimateStep";
-
-const steps = [
-  "Personal Information",
-  "Contact Details",
-  "Professional Info",
-  "Documents",
-  "Review",
-];
+import { useAgentApplication } from "@/context/AgentApplicationContext";
 
 const ApplicationForm = ({
   onStageChange,
 }: {
   onStageChange: (stage: "requirements" | "application") => void;
 }) => {
-  const [step, setStep] = useState(0);
-
-  const [formData, setFormData] = useState<any>([]);
-
-  const next = () => setStep((prev) => Math.min(prev + 1, steps.length - 1));
-  const prev = () => setStep((prev) => Math.max(prev - 1, 0));
-
-  const updateData = (data: any) => {
-    setFormData((prev: any) => ({ ...prev, ...data }));
-  };
+  const { nextStep, prevStep, step, steps, formData, updateForm } = useAgentApplication();
 
   const renderStep = () => {
     switch (step) {
       case 0:
-        return <PersonalInfoStep onNext={next} onChange={updateData} />;
+        return <PersonalInfoStep formData={formData} onNext={nextStep} updateForm={updateForm} />;
       case 1:
         return (
-          <ContactDetail onNext={next} onBack={prev} onChange={updateData} />
+          <ContactDetail formData={formData} onNext={nextStep} onBack={prevStep} updateForm={updateForm} />
         );
       case 2:
         return (
-          <Professional onNext={next} onBack={prev} onChange={updateData} />
+          <Professional formData={formData} onNext={nextStep} onBack={prevStep} updateForm={updateForm} />
         );
       case 3:
-        return <Documents onNext={next} onBack={prev} onChange={updateData} />;
+        return <Documents formData={formData} onNext={nextStep} onBack={prevStep} updateForm={updateForm} />;
       case 4:
-        return <Review onBack={prev} />;
+        return <Review onBack={prevStep} />;
       default:
         return null;
     }

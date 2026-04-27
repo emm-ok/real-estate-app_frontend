@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { inputClass } from "@/lib/utils";
 import React, { useState } from "react";
 
-const ContactDetail = ({ onNext, onBack, onChange }) => {
+const ContactDetail = ({ formData, onNext, onBack, updateForm }) => {
   const [form, setForm] = useState({
     address: "",
     city: "",
@@ -60,10 +60,7 @@ const ContactDetail = ({ onNext, onBack, onChange }) => {
             Back
           </button>
           <button
-            onClick={() => {
-              onChange({ form });
-              onNext();
-            }}
+            onClick={onNext}
             className="bg-neutral-800 cursor-pointer text-white px-6 py-3 rounded-md hover:bg-black transition"
           >
             Continue

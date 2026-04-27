@@ -59,9 +59,12 @@ export const getMyAgentApplication = async () => {
     apiError(error);
   }
 };
-export const updateAgentApplication = async () => {
+export const updateAgentApplication = async (payload: {
+  step: number,
+  professional?: any,
+}) => {
     try {
-    const res = await api.put(`${baseUrl}`);
+    const res = await api.put(`${baseUrl}`, payload);
     return res.data;
   } catch (error) {
     apiError(error);

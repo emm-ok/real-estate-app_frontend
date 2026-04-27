@@ -1,64 +1,38 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { toast } from "sonner";
 import Skeleton from "../ui/Skeleton";
 import {
   createAgentApplication,
-  getMyAgentApplication,
 } from "@/lib/agent-application";
-import Loader from "../ui/Loader";
-import { useAuth } from "@/context/AuthContext";
-import { AgentApplication } from "@/types";
+import { useAgentApplication } from "@/context/AgentApplicationContext";
+import { toast } from "sonner";
 
 const StartButton = ({
   onStageChange,
 }: {
   onStageChange: (stage: "requirements" | "application") => void;
 }) => {
-  const [application, setApplication] = useState<AgentApplication | null>(null);
-  const [loading, setLoading] = useState(true);
-  const { user } = useAuth();
+  const { application, loading, setLoading } = useAgentApplication();
 
-  useEffect(() => {
-    const fetch = async () => {
-      try {
-        const data = await getMyAgentApplication();
-        console.log("Application", data.application);
-        setApplication(data.application);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetch();
-  }, []);
-
+  console.log("Agent Application", application)
   const blocked = ["PENDING", "APPROVED"];
-
   const status = application?.status;
   const isBlocked = status !== undefined && blocked.includes(status);
 
   const handleStart = async () => {
     try {
-      // if (application) {
-      //   if (isBlocked) {
-      //     toast.info(`Application ${status}`);
-      //   }
-      //   // router.push(`/agent-application?app=${application.id}`);
-      //   console.log("Application",application);
-      //   console.log("ApplicationId",application.id);
-      //   onStageChange("application");
-      //   return;
-      // }
-      // const res = await createAgentApplication();
-      // router.push(`/agent-application?app=${res.id}`)
+      if (application) {
+        if (isBlocked) {
+          toast.info(`Application ${status}`);
+        }
+        console.log("Application",application);
+        onStageChange("application");
+        return;
+      }
+      await createAgentApplication();
       onStageChange("application");
-      // console.log(res.id);
     } finally {
-      setTimeout(() => {
         setLoading(false);
-      }, 3000);
     }
   };
 
@@ -82,11 +56,28 @@ const StartButton = ({
       </div>
 
       <button
-        onClick={() => onStageChange("application")}
-        className="mt-6 bg-white text-black py-3 rounded-xl font-medium hover:scale-[1.02] transition"
-      >
-        Start Application
-      </button>
+      onClick={handleStart}
+      disabled={isBlocked}
+      className={`mt-6 w-full py-3 rounded-xl font-medium transition
+        ${
+          isBlocked
+            ? "bg-white/20 cursor-not-allowed"
+            : "bg-white text-black hover:scale-[1.02]"
+        }`}
+    >
+      {!application && "Start Registration"}
+      {loading && "Redirecting..."}
+      {status === "DRAFT" && "Continue Registration"}
+      {status === "PENDING" && "Under Review"}
+      {status === "APPROVED" && "Verified"}
+      {status === "REJECTED" && "Rejected"}
+    </button>
+
+    {isBlocked && (
+      <p className="text-xs text-slate-400 mt-3">
+        Application is currently in progress
+      </p>
+    )}
     </div>
   );
 };

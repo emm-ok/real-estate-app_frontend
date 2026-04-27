@@ -4,10 +4,11 @@ import SearchBar from "@/components/home/SearchBar";
 import image from "@/public/assets/elite-prop-hmlP-v0vJ5o-unsplash.jpg";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 
 const Hero = () => {
   return (
-    <section className="relative bg-gray-100">
+    <section className="relative bg-gray-100 min-h-screen">
       <AnimatePresence>
         <motion.div
           initial={{ opacity: 0, x: -40 }}
@@ -24,9 +25,9 @@ const Hero = () => {
                 properties.
               </p>
 
-              <button className="bg-blue-600 text-white px-6 py-3 rounded-md">
+              <Link href="/listings" className="bg-blue-600 text-white px-6 py-3 rounded-md">
                 Explore Properties
-              </button>
+              </Link>
             </div>
 
             <Image
@@ -41,7 +42,7 @@ const Hero = () => {
         </motion.div>
       </AnimatePresence>
 
-      <div className="absolute left-1/2 -bottom-12 transform -translate-x-1/2 w-full px-8">
+      <div className="absolute left-1/2 bottom-40 transform -translate-x-1/2 w-full px-8">
         <SearchBar />
       </div>
     </section>

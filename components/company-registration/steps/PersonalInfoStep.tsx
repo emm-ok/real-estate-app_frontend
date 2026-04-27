@@ -91,7 +91,7 @@ export default function PersonalInfoStep({ onNext, onChange }: any) {
         </div>
 
         <div className="flex justify-between mt-4">
-          <button onClick="" className="text-gray-400 px-4 py-2">
+          <button className="text-gray-400 px-4 py-2">
             Back
           </button>
           <button

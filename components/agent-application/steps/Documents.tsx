@@ -18,7 +18,7 @@ const docs = [
     name: "photo",
   },
 ];
-const Documents = ({ onNext, onBack, onChange }) => {
+const Documents = ({ formData, onNext, onBack, updateForm }) => {
   const [form, setForm] = useState({});
 
   return (
@@ -51,10 +51,7 @@ const Documents = ({ onNext, onBack, onChange }) => {
             Back
           </button>
           <button
-            onClick={() => {
-              onChange({ form });
-              onNext();
-            }}
+            onClick={onNext}
             className="bg-neutral-800 cursor-pointer text-white px-6 py-3 rounded-md hover:bg-black transition"
           >
             Continue

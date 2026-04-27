@@ -3,7 +3,6 @@
 import ApplicationForm from "@/components/agent-application/ApplicationForm";
 import StartButton from "@/components/become-agent/StartButton";
 import StatusCard from "@/components/become-agent/StatusCard";
-import { useAuth } from "@/context/AuthContext";
 import { ChartBar, CheckCircle, User } from "lucide-react";
 import React, { useState } from "react";
 
@@ -41,9 +40,7 @@ const BecomeAgentPage = () => {
   const [stage, setStage] = useState<"requirements" | "application">(
     "requirements",
   );
-  const { user } = useAuth();
 
-  console.log(user);
   return (
   <div className="mx-auto px-6 py-10 space-y-10">
     {stage === "requirements" && (

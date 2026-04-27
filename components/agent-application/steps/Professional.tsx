@@ -3,17 +3,24 @@
 import AnimateStep from "@/components/layout/AnimateStep";
 import { Input } from "@/components/ui/input";
 import { inputClass } from "@/lib/utils";
-import React, { useState } from "react";
+import React from "react";
 
-const Professional = ({ onNext, onBack, onChange }) => {
-  const [form, setForm] = useState({
-    licenseNumber: "",
-    licenseCountry: "",
-    specialization: "",
-    yearsExperience: "",
-    companyName: "",
-    website: "",
-  });
+type Props = {
+  onNext: () => void;
+  onBack: () => void;
+  updateForm: (data: any) => void;
+  formData: any;
+};
+const Professional = ({ onNext, onBack, updateForm, formData }: Props) => {
+  const form = formData.professional;
+  // const [form, setForm] = useState({
+  //   licenseNumber: "",
+  //   licenseCountry: "",
+  //   specialization: "",
+  //   yearsExperience: "",
+  //   companyName: "",
+  //   website: "",
+  // });
 
   return (
     <AnimateStep>
@@ -26,7 +33,7 @@ const Professional = ({ onNext, onBack, onChange }) => {
             placeholder="ANSAOS30492JKD"
             className={inputClass}
             onChange={(e) =>
-              setForm({ ...form, licenseNumber: e.target.value })
+              updateForm({ ...form, licenseNumber: e.target.value })
             }
           />
           <label htmlFor="">License Country</label>
@@ -35,7 +42,7 @@ const Professional = ({ onNext, onBack, onChange }) => {
             placeholder="USA"
             className={inputClass}
             onChange={(e) =>
-              setForm({ ...form, licenseCountry: e.target.value })
+              updateForm({ ...form, licenseCountry: e.target.value })
             }
           />
           <div className="grid grid-cols-2 gap-4">
@@ -52,7 +59,7 @@ const Professional = ({ onNext, onBack, onChange }) => {
                 placeholder="10"
                 className={inputClass}
                 onChange={(e) =>
-                  setForm({ ...form, yearsExperience: e.target.value })
+                  updateForm({ ...form, yearsExperience: e.target.value })
                 }
               />
             </div>
@@ -62,14 +69,14 @@ const Professional = ({ onNext, onBack, onChange }) => {
             type="text"
             placeholder="Vortex"
             className={inputClass}
-            onChange={(e) => setForm({ ...form, companyName: e.target.value })}
+            onChange={(e) => updateForm({ ...form, companyName: e.target.value })}
           />
           <label htmlFor="">Website</label>
           <Input
             type="text"
             placeholder="https://www.example.com"
             className={inputClass}
-            onChange={(e) => setForm({ ...form, website: e.target.value })}
+            onChange={(e) => updateForm({ ...form, website: e.target.value })}
           />
         </div>
 
@@ -79,7 +86,6 @@ const Professional = ({ onNext, onBack, onChange }) => {
           </button>
           <button
             onClick={() => {
-              onChange({ form });
               onNext();
             }}
             className="bg-neutral-800 cursor-pointer text-white px-6 py-3 rounded-md hover:bg-black transition"
