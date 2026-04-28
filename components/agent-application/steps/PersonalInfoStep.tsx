@@ -4,15 +4,9 @@ import AnimateStep from "@/components/layout/AnimateStep";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/AuthContext";
 import { inputClass } from "@/lib/utils";
-import { useState } from "react";
 
-export default function PersonalInfoStep({ formData, onNext, updateForm }: any) {
+export default function PersonalInfoStep({ formData, updateForm }: any) {
   const { user} = useAuth();
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-  });
-
   return (
     <AnimateStep>
       <div className="flex flex-col justify-between w-full h-full gap-8">
@@ -32,10 +26,9 @@ export default function PersonalInfoStep({ formData, onNext, updateForm }: any) 
           <Input
             type="text"
             id="name"
-            value={user?.name}
+            defaultValue={user?.name}
             placeholder="Full Name"
             className={inputClass}
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
           />
 
           <label
@@ -47,10 +40,9 @@ export default function PersonalInfoStep({ formData, onNext, updateForm }: any) 
           <Input
             type="email"
             id="email"
-            value={user?.email}
+            defaultValue={user?.email}
             placeholder="Email"
             className={inputClass}
-            onChange={(e) => setForm({ ...form, email: e.target.value })}
           />
 
 
@@ -97,18 +89,6 @@ export default function PersonalInfoStep({ formData, onNext, updateForm }: any) 
           <select className={inputClass}>
             <option value="">Select your nationality</option>
           </select>
-        </div>
-
-        <div className="flex justify-between mt-4">
-          <button className="text-gray-400 px-4 py-2">
-            Back
-          </button>
-          <button
-            onClick={onNext}
-            className="bg-neutral-800 cursor-pointer text-white px-6 py-3 rounded-md hover:bg-black transition"
-          >
-            Continue
-          </button>
         </div>
       </div>
     </AnimateStep>

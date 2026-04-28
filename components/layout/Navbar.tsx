@@ -12,7 +12,7 @@ import { navLinks } from "@/lib/navLinks";
 import { useAuth } from "@/context/AuthContext";
 import Logout from "@/components/auth/Logout";
 import ProfileDropDown from "../ui/ProfileDropDown";
-import Loader from "../ui/Loader";
+
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -173,7 +173,7 @@ const Navbar = () => {
                 Login
               </Link>
             )}
-            {loading && <Loader />}
+            {loading &&  <div className="w-10 h-10 bg-stone-200 animate-pulse rounded-full shadow-md" />}
 
             {user && (
               <ProfileDropDown

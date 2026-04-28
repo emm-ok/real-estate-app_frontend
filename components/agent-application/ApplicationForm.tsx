@@ -4,39 +4,58 @@ import React, { useState } from "react";
 import AgentStepper from "./AgentStepper";
 import PersonalInfoStep from "./steps/PersonalInfoStep";
 import StepLayout from "../layout/StepLayout";
-import Image from "next/image";
-import agentImage from "@/public/assets/todd-kent-QG756pvuQZ0-unsplash.jpg";
 import { CheckCircle } from "lucide-react";
 import ContactDetail from "./steps/ContactDetail";
 import Professional from "./steps/Professional";
 import Documents from "./steps/Documents";
-import Review from "./steps/Review";
+import { Review } from "./steps/Review";
 import AnimateStep from "../layout/AnimateStep";
 import { useAgentApplication } from "@/context/AgentApplicationContext";
+import Loader from "../ui/Loader";
+import { useConfirm } from "@/context/providers/ConfirmProvider";
 
 const ApplicationForm = ({
   onStageChange,
 }: {
   onStageChange: (stage: "requirements" | "application") => void;
 }) => {
-  const { nextStep, prevStep, step, steps, formData, updateForm } = useAgentApplication();
+  const { nextStep, prevStep, step, steps, goToStep, stepLoading, submitLoading, submitApplication, formData, updateForm, localDocs, setLocalDocs } =
+    useAgentApplication();
+    const confirm = useConfirm();
 
   const renderStep = () => {
     switch (step) {
       case 0:
-        return <PersonalInfoStep formData={formData} onNext={nextStep} updateForm={updateForm} />;
+        return (
+          <PersonalInfoStep
+            formData={formData}
+            updateForm={updateForm}
+          />
+        );
       case 1:
         return (
-          <ContactDetail formData={formData} onNext={nextStep} onBack={prevStep} updateForm={updateForm} />
+          <ContactDetail
+            formData={formData}
+            updateForm={updateForm}
+          />
         );
       case 2:
         return (
-          <Professional formData={formData} onNext={nextStep} onBack={prevStep} updateForm={updateForm} />
+          <Professional
+            formData={formData}
+            updateForm={updateForm}
+          />
         );
       case 3:
-        return <Documents formData={formData} onNext={nextStep} onBack={prevStep} updateForm={updateForm} />;
+        return (
+          <Documents
+            formData={formData}
+            localDocs={localDocs}
+            setLocalDocs={setLocalDocs}
+          />
+        );
       case 4:
-        return <Review onBack={prevStep} />;
+        return <Review formData={formData} goToStep={goToStep}/>;
       default:
         return null;
     }
@@ -45,7 +64,12 @@ const ApplicationForm = ({
     <div className="w-full mx-auto">
       <AnimateStep>
         {/* HEADER */}
-        <button onClick={() => onStageChange("requirements")} className="underline text-xl font-bold">Back</button>
+        <button
+          onClick={() => onStageChange("requirements")}
+          className="underline text-xl font-bold"
+        >
+          Back
+        </button>
         <div className="text-center mb-4">
           <h1 className="text-3xl font-semibold">
             Agent Verification Onboarding
@@ -65,7 +89,44 @@ const ApplicationForm = ({
 
           {/* RIGHT FORM AREA */}
           <div className="md:col-span-2">
-            <StepLayout>{renderStep()}</StepLayout>
+            <StepLayout>
+              {renderStep()}
+              <div className="flex justify-between mt-4">
+                <button
+                  className="bg-gray-200 rounded-md px-6 py-2"
+                  onClick={prevStep}
+                  disabled={step < 1}
+                >
+                  Back
+                </button>
+                {step < steps.length - 1 ? (
+                  <button
+                    onClick={nextStep}
+                    className="bg-neutral-800 cursor-pointer text-white px-6 py-3 rounded-md hover:bg-black transition"
+                  >
+                    {stepLoading ? <Loader text="Saving..." /> : "Continue"}
+                  </button>
+                ): (
+                  <button
+            onClick={() =>
+              confirm({
+                title: "Are you sure you want to submit?",
+                description: "You application will be submitted for review",
+                confirmText: "Submit",
+                variant: "info",
+                onConfirm: async () => {
+                    await submitApplication();
+                    // router.push("/dashboard/user/become-agent/success");
+                },
+              })
+            }
+            className=" px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-md text-white"
+          >
+            {submitLoading ? <Loader text="Submitting..." /> : "Submit"}
+          </button>
+                )}
+              </div>
+            </StepLayout>
           </div>
 
           {/* LEFT TRUST PANEL */}

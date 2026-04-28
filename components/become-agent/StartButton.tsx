@@ -14,7 +14,6 @@ const StartButton = ({
 }) => {
   const { application, loading, setLoading } = useAgentApplication();
 
-  console.log("Agent Application", application)
   const blocked = ["PENDING", "APPROVED"];
   const status = application?.status;
   const isBlocked = status !== undefined && blocked.includes(status);
@@ -25,7 +24,6 @@ const StartButton = ({
         if (isBlocked) {
           toast.info(`Application ${status}`);
         }
-        console.log("Application",application);
         onStageChange("application");
         return;
       }

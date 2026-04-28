@@ -5,13 +5,7 @@ import { Input } from "@/components/ui/input";
 import { inputClass } from "@/lib/utils";
 import React, { useState } from "react";
 
-const ContactDetail = ({ formData, onNext, onBack, updateForm }) => {
-  const [form, setForm] = useState({
-    address: "",
-    city: "",
-    state: "",
-    country: "",
-  });
+const ContactDetail = ({ formData, updateForm }) => {
 
   return (
     <AnimateStep>
@@ -24,7 +18,6 @@ const ContactDetail = ({ formData, onNext, onBack, updateForm }) => {
               type="text"
               placeholder="Address no 1 Great Street"
               className={inputClass}
-              onChange={(e) => setForm({ ...form, address: e.target.value })}
             />
           </div>
           <div className="grid md:grid-cols-2 gap-4">
@@ -34,7 +27,6 @@ const ContactDetail = ({ formData, onNext, onBack, updateForm }) => {
                 type="text"
                 placeholder="Birmingham City"
                 className={inputClass}
-                onChange={(e) => setForm({ ...form, city: e.target.value })}
               />
             </div>
 
@@ -44,7 +36,6 @@ const ContactDetail = ({ formData, onNext, onBack, updateForm }) => {
                 type="text"
                 placeholder="Paris"
                 className={inputClass}
-                onChange={(e) => setForm({ ...form, state: e.target.value })}
               />
             </div>
           </div>
@@ -53,18 +44,6 @@ const ContactDetail = ({ formData, onNext, onBack, updateForm }) => {
               <option value="">Country</option>
             </select>
           </div>
-        </div>
-
-        <div className="flex justify-between mt-4">
-          <button onClick={onBack} className="border px-6 py-2 rounded-md">
-            Back
-          </button>
-          <button
-            onClick={onNext}
-            className="bg-neutral-800 cursor-pointer text-white px-6 py-3 rounded-md hover:bg-black transition"
-          >
-            Continue
-          </button>
         </div>
       </div>
     </AnimateStep>

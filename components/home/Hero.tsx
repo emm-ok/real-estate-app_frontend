@@ -42,7 +42,7 @@ const Hero = () => {
         </motion.div>
       </AnimatePresence>
 
-      <div className="absolute left-1/2 bottom-40 transform -translate-x-1/2 w-full px-8">
+      <div className="flex flex-col justify-center gap-10 items-center w-full px-8 h-screen">
         <SearchBar />
       </div>
     </section>

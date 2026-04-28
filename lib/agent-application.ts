@@ -59,10 +59,7 @@ export const getMyAgentApplication = async () => {
     apiError(error);
   }
 };
-export const updateAgentApplication = async (payload: {
-  step: number,
-  professional?: any,
-}) => {
+export const updateAgentApplication = async (payload: any) => {
     try {
     const res = await api.put(`${baseUrl}`, payload);
     return res.data;
@@ -70,9 +67,15 @@ export const updateAgentApplication = async (payload: {
     apiError(error);
   }
 };
-export const uploadAgentDocument = async (type: AgentDocumentType) => {
+export const uploadAgentDocument = async (type: AgentDocumentType, file: File) => {
     try {
-    const res = await api.post(`${baseUrl}/doc/${type}`);
+      const form = new FormData();
+      form.append("file", file);
+    const res = await api.post(`${baseUrl}/doc/${type}`, form, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      }
+    });
     return res.data;
   } catch (error) {
     apiError(error);

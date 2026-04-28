@@ -2,25 +2,32 @@
 
 import AnimateStep from "@/components/layout/AnimateStep";
 import { Input } from "@/components/ui/input";
+import { FormDataType } from "@/context/AgentApplicationContext";
 import { inputClass } from "@/lib/utils";
 import React from "react";
 
-type Props = {
-  onNext: () => void;
-  onBack: () => void;
-  updateForm: (data: any) => void;
-  formData: any;
-};
-const Professional = ({ onNext, onBack, updateForm, formData }: Props) => {
-  const form = formData.professional;
-  // const [form, setForm] = useState({
-  //   licenseNumber: "",
-  //   licenseCountry: "",
-  //   specialization: "",
-  //   yearsExperience: "",
-  //   companyName: "",
-  //   website: "",
-  // });
+const options = [
+  "RESIDENTIAL",
+  "COMMERCIAL",
+  "LUXURY",
+  "STUDENT",
+  "SHORTLET",
+  "LAND",
+];
+const Professional = ({ updateForm, formData }) => {
+  const data = formData.professional || {};
+  const specialization = data.specialization || [];
+  
+  const toggle = (value: string) => {
+    const next = specialization.includes(value)
+    ? specialization.filter((x) => x !== value)
+    : [...specialization, value];
+    
+    updateForm("professional", {
+      specialization: next,
+    });
+  };
+  console.log("formData", formData);
 
   return (
     <AnimateStep>
@@ -30,36 +37,50 @@ const Professional = ({ onNext, onBack, updateForm, formData }: Props) => {
           <label htmlFor="">License Number</label>
           <Input
             type="text"
+            value={data.licenseNumber || ""}
             placeholder="ANSAOS30492JKD"
             className={inputClass}
             onChange={(e) =>
-              updateForm({ ...form, licenseNumber: e.target.value })
+              updateForm("professional", { licenseNumber: e.target.value })
             }
           />
           <label htmlFor="">License Country</label>
           <Input
             type="text"
+            value={data.licenseCountry || ""}
             placeholder="USA"
             className={inputClass}
             onChange={(e) =>
-              updateForm({ ...form, licenseCountry: e.target.value })
+              updateForm("professional", { licenseCountry: e.target.value })
             }
           />
           <div className="grid grid-cols-2 gap-4">
-            <select className={inputClass}>
-              <option value="">Specialization</option>
-            </select>
+            <div className="space-y-3">
+              {options.map((opt) => (
+                <label key={opt} className="flex gap-2">
+                  <input
+                    type="checkbox"
+                    checked={specialization.includes(opt)}
+                    onChange={() => toggle(opt)}
+                  />
+                  {opt}
+                </label>
+              ))}
+            </div>
 
             <div>
               <label htmlFor="" className="text-sm">
                 Years of Experience
               </label>
               <Input
-                type="text"
+                type="number"
+                value={data.yearsExperience || ""}
                 placeholder="10"
                 className={inputClass}
                 onChange={(e) =>
-                  updateForm({ ...form, yearsExperience: e.target.value })
+                  updateForm("professional", {
+                    yearsExperience: e.target.value ? Number(e.target.value) : undefined
+                  })
                 }
               />
             </div>
@@ -67,31 +88,23 @@ const Professional = ({ onNext, onBack, updateForm, formData }: Props) => {
           <label htmlFor="">Company Name</label>
           <Input
             type="text"
+            value={data.companyName || ""}
             placeholder="Vortex"
             className={inputClass}
-            onChange={(e) => updateForm({ ...form, companyName: e.target.value })}
+            onChange={(e) =>
+              updateForm("professional", { companyName: e.target.value })
+            }
           />
           <label htmlFor="">Website</label>
           <Input
             type="text"
+            value={data.website || ""}
             placeholder="https://www.example.com"
             className={inputClass}
-            onChange={(e) => updateForm({ ...form, website: e.target.value })}
+            onChange={(e) =>
+              updateForm("professional", { website: e.target.value })
+            }
           />
-        </div>
-
-        <div className="flex justify-between mt-4">
-          <button onClick={onBack} className="border px-6 py-2 rounded-md">
-            Back
-          </button>
-          <button
-            onClick={() => {
-              onNext();
-            }}
-            className="bg-neutral-800 cursor-pointer text-white px-6 py-3 rounded-md hover:bg-black transition"
-          >
-            Continue
-          </button>
         </div>
       </div>
     </AnimateStep>
