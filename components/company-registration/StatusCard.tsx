@@ -1,28 +1,11 @@
 "use client";
 
-import { getMyCompanyApplication } from "@/lib/company-application";
-import { CompanyApplication, ApplicationStatus } from "@/types";
-import React, { useEffect, useState } from "react";
+import { ApplicationStatus } from "@/types";
 import Skeleton from "../ui/Skeleton";
+import { useCompanyApplication } from "@/context/CompanyApplicationContext";
 
 const StatusCard = () => {
-  const [application, setApplication] = useState<CompanyApplication | null>(
-    null,
-  );
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetch = async () => {
-      try {
-        const data = await getMyCompanyApplication();
-        console.log("Application", data);
-        setApplication(data.application);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetch();
-  }, []);
+  const {application, loading} = useCompanyApplication();
 
   if (loading) {
     return (

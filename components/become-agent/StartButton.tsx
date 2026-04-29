@@ -29,7 +29,10 @@ const StartButton = ({
       }
       await createAgentApplication();
       onStageChange("application");
-    } finally {
+    } catch(error: any){
+      console.error(error);
+    } 
+    finally {
         setLoading(false);
     }
   };

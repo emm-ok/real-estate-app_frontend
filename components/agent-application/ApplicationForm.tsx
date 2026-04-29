@@ -1,6 +1,5 @@
 "use client";
 
-import React, { useState } from "react";
 import AgentStepper from "./AgentStepper";
 import PersonalInfoStep from "./steps/PersonalInfoStep";
 import StepLayout from "../layout/StepLayout";

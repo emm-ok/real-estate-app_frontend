@@ -12,15 +12,15 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export type FormDataType = {
-  personal?: {
-    name: string;
-    email: string;
-    country?: string;
-    dob?: string;
-    phone?: string;
-    nationality?: string;
-  };
-  contact?: any;
+  // personal?: {
+  //   name: string;
+  //   email: string;
+  //   country?: string;
+  //   dob?: string;
+  //   phone?: string;
+  //   nationality?: string;
+  // };
+  // contact?: any;
   professional?: any;
   documents?: Record<string, any>;
 };
@@ -46,7 +46,6 @@ interface ContextType {
   setFormData: React.Dispatch<React.SetStateAction<FormDataType>>;
 
   updateForm: (section: keyof FormDataType, data: any) => void;
-  // uploadDocument: (type: string, file: File) => Promise<void>
   deleteDocument: (type: AgentDocumentType) => Promise<void>;
   submitApplication: () => Promise<void>
 }
@@ -72,7 +71,6 @@ export const AgentApplicationProvider: React.FC<{
   const [formData, setFormData] = useState<FormDataType>({});
   const [localDocs, setLocalDocs] = useState<any>({});
   const [application, setApplication] = useState<AgentApplication | null>(null);
-  const [editReturnStep, setEditReturnStep] = useState<number | null>(null);
 
   const fetchApplication = async () => {
     try {
@@ -156,7 +154,6 @@ export const AgentApplicationProvider: React.FC<{
   const prevStep = () => setStep((prev) => Math.max(prev - 1, 0));
 
   const goToStep = async (step: number) => {
-    setEditReturnStep(step);
     setStep(step);
   };
 
@@ -214,7 +211,6 @@ export const AgentApplicationProvider: React.FC<{
         stepLoading,
         submitLoading,
         updateForm,
-        // uploadDocument,
         deleteDocument,
         submitApplication
       }}

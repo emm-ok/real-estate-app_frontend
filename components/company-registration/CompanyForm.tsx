@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+// "use client"
+
 import AnimateStep from "../layout/AnimateStep";
 import StepLayout from "../layout/StepLayout";
 import Image from "next/image";
@@ -8,38 +9,51 @@ import ContactDetail from "./steps/ContactDetail";
 import CompanyInfo from "./steps/CompanyInfo";
 import CompanyStepper from "./CompanyStepper";
 import { CheckCircle } from "lucide-react";
-import Review from "./steps/Review";
 import Documents from "./steps/Documents";
 import { useCompanyApplication } from "@/context/CompanyApplicationContext";
+import { useConfirm } from "@/context/providers/ConfirmProvider";
+import Loader from "../ui/Loader";
+import { Review } from "./steps/Review";
 
 const CompanyForm = ({
   onStageChange,
 }: {
   onStageChange: (stage: "requirements" | "registration") => void;
 }) => {
-  const { nextStep, prevStep, step, steps } = useCompanyApplication();
-  const [formData, setFormData] = useState([]);
-
-  const updateData = () => {
-    setFormData((prev) => ({ ...prev, ...formData }));
-  };
+  const {
+    nextStep,
+    prevStep,
+    step,
+    steps,
+    goToStep,
+    stepLoading,
+    submitLoading,
+    submitApplication,
+    formData,
+    updateForm,
+    localDocs,
+    setLocalDocs,
+  } = useCompanyApplication();
+  const confirm = useConfirm();
 
   const renderStep = () => {
     switch (step) {
       case 0:
-        return <PersonalInfoStep onNext={nextStep} onChange={updateData} />;
+        return <PersonalInfoStep formData={formData} updateForm={updateForm} />;
       case 1:
-        return (
-          <ContactDetail onNext={nextStep} onBack={prevStep} onChange={updateData} />
-        );
+        return <ContactDetail formData={formData} updateForm={updateForm} />;
       case 2:
-        return (
-          <CompanyInfo onNext={nextStep} onBack={prevStep} onChange={updateData} />
-        );
+        return <CompanyInfo formData={formData} updateForm={updateForm} />;
       case 3:
-        return <Documents onNext={nextStep} onBack={prevStep} onChange={updateData} />;
+        return (
+          <Documents
+            formData={formData}
+            localDocs={localDocs}
+            setLocalDocs={setLocalDocs}
+          />
+        );
       case 4:
-        return <Review onBack={prevStep} />;
+        return <Review formData={formData} goToStep={goToStep} />;
       default:
         return null;
     }
@@ -48,7 +62,12 @@ const CompanyForm = ({
     <div className="w-full mx-auto">
       <AnimateStep>
         {/* HEADER */}
-        <button onClick={() => onStageChange("requirements")} className="underline text-xl font-bold">Back</button>
+        <button
+          onClick={() => onStageChange("requirements")}
+          className="underline text-xl font-bold"
+        >
+          Back
+        </button>
         <div className="text-center mb-4">
           <h1 className="text-3xl font-semibold">
             Company Verification Onboarding
@@ -65,11 +84,48 @@ const CompanyForm = ({
           <div className="flex justify-center mb-10">
             <CompanyStepper steps={steps} currentStep={step} />
           </div>
-          
 
           {/* RIGHT FORM AREA */}
           <div className="md:col-span-2">
-            <StepLayout>{renderStep()}</StepLayout>
+            <StepLayout>
+              {renderStep()}
+              <div className="flex justify-between mt-4">
+                <button
+                  className="bg-gray-200 rounded-md px-6 py-2"
+                  onClick={prevStep}
+                  disabled={step < 1}
+                >
+                  Back
+                </button>
+                {step < steps.length - 1 ? (
+                  <button
+                    onClick={nextStep}
+                    className="bg-neutral-800 cursor-pointer text-white px-6 py-3 rounded-md hover:bg-black transition"
+                  >
+                    {stepLoading ? <Loader text="Saving..." /> : "Continue"}
+                  </button>
+                ) : (
+                  <button
+                    onClick={() =>
+                      confirm({
+                        title: "Are you sure you want to submit?",
+                        description:
+                          "You application will be submitted for review",
+                        confirmText: "Submit",
+                        variant: "info",
+                        onConfirm: async () => {
+                          await submitApplication();
+                          // router.push("/dashboard/user/become-agent/success");
+                        },
+                      })
+                    }
+                    className=" px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-md text-white"
+                  >
+                    {submitLoading ? <Loader text="Submitting..." /> : "Submit"}
+                  </button>
+                )}
+              </div>
+            </StepLayout>
           </div>
 
           {/* LEFT TRUST PANEL */}

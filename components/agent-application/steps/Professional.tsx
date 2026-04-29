@@ -2,9 +2,7 @@
 
 import AnimateStep from "@/components/layout/AnimateStep";
 import { Input } from "@/components/ui/input";
-import { FormDataType } from "@/context/AgentApplicationContext";
 import { inputClass } from "@/lib/utils";
-import React from "react";
 
 const options = [
   "RESIDENTIAL",

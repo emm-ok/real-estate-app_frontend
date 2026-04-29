@@ -1,31 +1,18 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import Skeleton from "../ui/Skeleton";
-import { createCompanyApplication, getMyCompanyApplication } from "@/lib/company-application";
-import Loader from "../ui/Loader";
-import { useAuth } from "@/context/AuthContext";
-import { CompanyApplication } from "@/types";
+import {
+  createCompanyApplication,
+} from "@/lib/company-application";
+import { useCompanyApplication } from "@/context/CompanyApplicationContext";
 
-const StartButton = ({ onStageChange }: { onStageChange: (stage: "requirements" | "registration") => void }) => {
-  const [application, setApplication] = useState<CompanyApplication | null>(null);
-  const [loading, setLoading] = useState(true);
-  const { user } = useAuth();
-
-  useEffect(() => {
-    const fetch = async () => {
-      try {
-        const data = await getMyCompanyApplication();
-        console.log("Application", data.application);
-        setApplication(data.application);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetch();
-  }, []);
+const StartButton = ({
+  onStageChange,
+}: {
+  onStageChange: (stage: "requirements" | "registration") => void;
+}) => {
+  const { application, loading, setLoading } = useCompanyApplication();
 
   const blocked = ["PENDING", "APPROVED"];
 
@@ -34,24 +21,19 @@ const StartButton = ({ onStageChange }: { onStageChange: (stage: "requirements" 
 
   const handleStart = async () => {
     try {
-      // if (application) {
-      //   if (isBlocked) {
-      //     toast.info(`Application ${status}`);
-      //   }
-      //   // router.push(`/agent-application?app=${application.id}`);
-      //   console.log("Application",application);
-      //   console.log("ApplicationId",application.id);
-      //   onStageChange("registration");
-      //   return;
-      // }
-      // const res = await createCompanyApplication();
-      // router.push(`/agent-application?app=${res.id}`)
+      if (application) {
+        if (isBlocked) {
+          toast.info(`Application ${status}`);
+        }
+        onStageChange("registration");
+        return;
+      }
+      await createCompanyApplication();
       onStageChange("registration");
-      // console.log(res.id);
+    } catch (error: any) {
+      console.error(error);
     } finally {
-      setTimeout(() => {
-        setLoading(false);
-      }, 3000);
+      setLoading(false);
     }
   };
 
@@ -64,43 +46,42 @@ const StartButton = ({ onStageChange }: { onStageChange: (stage: "requirements" 
     );
   }
 
-return (
-  <div className="bg-slate-900 text-white rounded-2xl p-6 flex flex-col justify-between">
-    <div>
-      <h3 className="text-lg font-semibold">
-        Begin Company Verification
-      </h3>
+  return (
+    <div className="bg-slate-900 text-white rounded-2xl p-6 flex flex-col justify-between">
+      <div>
+        <h3 className="text-lg font-semibold">Begin Company Verification</h3>
 
-      <p className="text-sm text-slate-400 mt-2">
-        Complete your registration to unlock listing access and business tools.
-      </p>
-    </div>
+        <p className="text-sm text-slate-400 mt-2">
+          Complete your registration to unlock listing access and business
+          tools.
+        </p>
+      </div>
 
-    <button
-      onClick={handleStart}
-      disabled={isBlocked}
-      className={`mt-6 w-full py-3 rounded-xl font-medium transition
+      <button
+        onClick={handleStart}
+        disabled={isBlocked}
+        className={`mt-6 w-full py-3 rounded-xl font-medium transition
         ${
           isBlocked
             ? "bg-white/20 cursor-not-allowed"
             : "bg-white text-black hover:scale-[1.02]"
         }`}
-    >
-      {!application && "Start Registration"}
-      {loading && "Redirecting..."}
-      {status === "DRAFT" && "Continue Registration"}
-      {status === "PENDING" && "Under Review"}
-      {status === "APPROVED" && "Verified"}
-      {status === "REJECTED" && "Rejected"}
-    </button>
+      >
+        {!application && "Start Registration"}
+        {loading && "Redirecting..."}
+        {status === "DRAFT" && "Continue Registration"}
+        {status === "PENDING" && "Under Review"}
+        {status === "APPROVED" && "Verified"}
+        {status === "REJECTED" && "Rejected"}
+      </button>
 
-    {isBlocked && (
-      <p className="text-xs text-slate-400 mt-3">
-        Application is currently in progress
-      </p>
-    )}
-  </div>
-);
+      {isBlocked && (
+        <p className="text-xs text-slate-400 mt-3">
+          Application is currently in progress
+        </p>
+      )}
+    </div>
+  );
 };
 
 export default StartButton;

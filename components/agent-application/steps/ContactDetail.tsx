@@ -3,7 +3,6 @@
 import AnimateStep from "@/components/layout/AnimateStep";
 import { Input } from "@/components/ui/input";
 import { inputClass } from "@/lib/utils";
-import React, { useState } from "react";
 
 const ContactDetail = ({ formData, updateForm }) => {
 
