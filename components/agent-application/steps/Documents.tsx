@@ -1,67 +1,97 @@
 "use client";
 
 import AnimateStep from "@/components/layout/AnimateStep";
-import { Input } from "@/components/ui/input";
+import Loader from "@/components/ui/Loader";
+import { useAgentApplication } from "@/context/AgentApplicationContext";
+import { AgentDocumentType } from "@/types";
 import { Upload } from "lucide-react";
-import React, { useState } from "react";
 
 const docs = [
-  { title: "ID Card", description: "Upload your National ID", name: "idCard" },
+  { title: "ID Card", description: "Upload your National ID", name: "ID_CARD" },
   {
     title: "Real Estate License",
     description: "Upload your real estate license",
-    name: "license",
+    name: "LICENSE",
   },
   {
     title: "Profile Photo",
     description: "Upload a professional photo",
-    name: "photo",
+    name: "SELFIE",
   },
 ];
-const Documents = ({ onNext, onBack, onChange }) => {
-  const [form, setForm] = useState({});
+
+
+const Documents = ({ formData, localDocs, setLocalDocs }) => {
+  const { deleteDocument, deleteLoading } = useAgentApplication();
+
+  const docsMap = (formData.documents || []).reduce((acc, doc) => {
+    acc[doc.type] = doc;
+    return acc;
+  }, {} as Record<string, any>);
 
   return (
     <AnimateStep>
-      <div className="flex flex-col justify-between w-full h-full gap-8 md:w-3/4">
-        <div className="flex flex-col justify-between gap-4">
-          {docs.map((doc) => (
-            <div
-              key={doc.title}
-              className="flex justify-between items-center p-4 gap-4 border border-gray-400 rounded-md"
-            >
-              <div className="flex items-center gap-4">
-                <Upload size={25} />
-                <div className="space-y-4">
-                  <h2 className="font-bold text-gray-700">{doc.title}</h2>
-                  <p>{doc.description}</p>
+      <div className="flex flex-col gap-8">
+        <h2 className="text-xl font-semibold">Upload Documents</h2>
+
+        <div className="bg-white space-y-6">
+          {docs.map((doc) => {
+            const backendDoc: any = docsMap[doc.name];
+            const display = backendDoc 
+            && backendDoc.type + " " + backendDoc?.publicId?.split("/").pop() 
+
+            return (
+              <div
+                key={doc.name}
+                className="border border-dashed rounded-xl p-5 flex justify-between items-center"
+              >
+                <div className="flex items-center gap-4 p-4">
+                  <Upload size={25} />
+                  <div>
+                    <h2 className="font-medium">{doc.title}</h2>
+
+                    <p className="text-gray-500">
+                      {/* priority: local -> backend -> default */}
+                      {localDocs[doc.name]?.name ||
+                        display ||
+                        doc.description}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <label className="cursor-pointer bg-black text-white px-4 py-2 rounded-lg text-sm">
+                    Upload
+                    <input
+                      type="file"
+                      className="hidden"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+
+                        setLocalDocs((prev) => ({
+                          ...prev,
+                          [doc.name]: file,
+                        }));
+                      }}
+                    />
+                  </label>
+
+                  {backendDoc && (
+                    <button
+                      onClick={() => deleteDocument(doc.name as AgentDocumentType)}
+                      className="text-red-500 text-sm border border-red-200 rounded cursor-pointer py-2 px-4"
+                    >
+                      {deleteLoading ? <Loader text="Removing..." /> : "Remove"}
+                    </button>
+                  )}
                 </div>
               </div>
-              <button className="px-4 py-3 text-sm border border-gray-400 rounded-md">
-                <Input type="file" name={doc.name} hidden />
-                Upload
-              </button>
-            </div>
-          ))}
-        </div>
-
-        <div className="flex justify-between mt-4">
-          <button onClick={onBack} className="border px-6 py-2 rounded-md">
-            Back
-          </button>
-          <button
-            onClick={() => {
-              onChange({ form });
-              onNext();
-            }}
-            className="bg-neutral-800 text-white px-6 py-2 rounded-md"
-          >
-            Continue
-          </button>
+            );
+          })}
         </div>
       </div>
     </AnimateStep>
   );
 };
-
 export default Documents;

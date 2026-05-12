@@ -1,7 +1,7 @@
 
 const Skeleton = ({ className }: { className?: string }) => {
   return (
-    <div className={`animate-pulse rounded-md bg-stone-200 ${className}`} />
+    <div className={`animate-pulse bg-stone-200 ${className} rounded-md`} />
   )
 }
 

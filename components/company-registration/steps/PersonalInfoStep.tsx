@@ -2,23 +2,21 @@
 
 import AnimateStep from "@/components/layout/AnimateStep";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
+import { inputClass } from "@/lib/utils";
 
-export default function PersonalInfoStep({ onNext, onChange }: any) {
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-  });
-
-  const handleNext = () => {
-    onChange(form);
-    onNext();
-  };
-
+export default function PersonalInfoStep({ formData, updateForm }: any) {
+  const { user} = useAuth();
   return (
     <AnimateStep>
-      <div className="flex flex-col justify-between w-full h-full gap-8 md:w-3/4">
-        <div className="flex flex-col justify-between h-full gap-4">
+      <div className="flex flex-col justify-between w-full h-full gap-8">
+         <div>
+      <h2 className="text-xl font-semibold">Personal Information</h2>
+      <p className="text-sm text-gray-500">
+        Tell us who you are so we can verify your identity.
+      </p>
+    </div>
+        <div className="bg-white rounded-2xl space-y-6">
           <label
             htmlFor="name"
             className="block text-sm font-semibold text-gray-700"
@@ -28,9 +26,9 @@ export default function PersonalInfoStep({ onNext, onChange }: any) {
           <Input
             type="text"
             id="name"
+            defaultValue={user?.name}
             placeholder="Full Name"
-            className="w-full border border-gray-400 rounded-md px-4 py-2"
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
+            className={inputClass}
           />
 
           <label
@@ -42,30 +40,26 @@ export default function PersonalInfoStep({ onNext, onChange }: any) {
           <Input
             type="email"
             id="email"
+            defaultValue={user?.email}
             placeholder="Email"
-            className="w-full border border-gray-400 rounded-md px-4 py-2"
-            onChange={(e) => setForm({ ...form, email: e.target.value })}
+            className={inputClass}
           />
 
-          <label
-            htmlFor="number"
+
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <label
+            htmlFor="date"
             className="block text-sm font-semibold text-gray-700"
           >
-            Phone Number
+            Country
           </label>
-
-          <div className="flex items-center">
-            <select className="border border-gray-400 p-1 mr-2">
+              <select className={inputClass}>
               <option value="">Country</option>
             </select>
-            <Input
-              type="number"
-              id="number"
-              placeholder="(555) 123-4567"
-              className="w-full border border-gray-400 rounded-md px-4 py-2"
-            />
-          </div>
-          <label
+            </div>
+           <div>
+            <label
             htmlFor="date"
             className="block text-sm font-semibold text-gray-700"
           >
@@ -75,24 +69,26 @@ export default function PersonalInfoStep({ onNext, onChange }: any) {
             type="date"
             id="date"
             placeholder="MM/DD/YYYY"
-            className="w-full border border-gray-400 rounded-md px-4 py-2"
-          />
+            className={`${inputClass} py-6`}
+          /></div> 
+          </div>
+          <label
+            htmlFor="number"
+            className="block text-sm font-semibold text-gray-700"
+          >
+            Phone Number
+          </label>
+            <Input
+              type="number"
+              id="number"
+              placeholder="(555) 123-4567"
+              className={inputClass}
+            />
+          
 
-          <select className="w-full border border-gray-400 p-1 mr-2">
+          <select className={inputClass}>
             <option value="">Select your nationality</option>
           </select>
-        </div>
-
-        <div className="flex justify-between mt-4">
-          <button onClick="" className="border px-6 py-2 rounded-md border-gray-400 text-gray-400">
-            Back
-          </button>
-          <button
-            onClick={handleNext}
-            className="bg-neutral-800 text-white px-6 py-2 rounded-md"
-          >
-            Continue
-          </button>
         </div>
       </div>
     </AnimateStep>

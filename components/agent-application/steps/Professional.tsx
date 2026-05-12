@@ -2,55 +2,83 @@
 
 import AnimateStep from "@/components/layout/AnimateStep";
 import { Input } from "@/components/ui/input";
-import React, { useState } from "react";
+import { inputClass } from "@/lib/utils";
 
-const Professional = ({ onNext, onBack, onChange }) => {
-  const [form, setForm] = useState({
-    licenseNumber: "",
-    licenseCountry: "",
-    specialization: "",
-    yearsExperience: "",
-    companyName: "",
-    website: "",
-  });
+const options = [
+  "RESIDENTIAL",
+  "COMMERCIAL",
+  "LUXURY",
+  "STUDENT",
+  "SHORTLET",
+  "LAND",
+];
+const Professional = ({ updateForm, formData }) => {
+  const data = formData.professional || {};
+  const specialization = data.specialization || [];
+  
+  const toggle = (value: string) => {
+    const next = specialization.includes(value)
+    ? specialization.filter((x) => x !== value)
+    : [...specialization, value];
+    
+    updateForm("professional", {
+      specialization: next,
+    });
+  };
+  console.log("formData", formData);
 
   return (
     <AnimateStep>
-      <div className="flex flex-col justify-between w-full h-full gap-8 md:w-3/4">
-        <div className="flex flex-col justify-between gap-4">
+      <div className="flex flex-col justify-between w-full h-full gap-8">
+        <h2 className="text-xl font-semibold">Agent Details</h2>
+        <div className="bg-white space-y-4">
           <label htmlFor="">License Number</label>
           <Input
             type="text"
+            value={data.licenseNumber || ""}
             placeholder="ANSAOS30492JKD"
-            className="w-full border border-gray-400 rounded-md px-4 py-2"
+            className={inputClass}
             onChange={(e) =>
-              setForm({ ...form, licenseNumber: e.target.value })
+              updateForm("professional", { licenseNumber: e.target.value })
             }
           />
           <label htmlFor="">License Country</label>
           <Input
             type="text"
+            value={data.licenseCountry || ""}
             placeholder="USA"
-            className="w-full border border-gray-400 rounded-md px-4 py-2"
+            className={inputClass}
             onChange={(e) =>
-              setForm({ ...form, licenseCountry: e.target.value })
+              updateForm("professional", { licenseCountry: e.target.value })
             }
           />
           <div className="grid grid-cols-2 gap-4">
-            <select className="border border-gray-400 rounded-md">
-              <option value="">Specialization</option>
-            </select>
+            <div className="space-y-3">
+              {options.map((opt) => (
+                <label key={opt} className="flex gap-2">
+                  <input
+                    type="checkbox"
+                    checked={specialization.includes(opt)}
+                    onChange={() => toggle(opt)}
+                  />
+                  {opt}
+                </label>
+              ))}
+            </div>
 
             <div>
               <label htmlFor="" className="text-sm">
                 Years of Experience
               </label>
               <Input
-                type="text"
+                type="number"
+                value={data.yearsExperience || ""}
                 placeholder="10"
-                className="w-full border border-gray-400 rounded-md px-4 py-2"
+                className={inputClass}
                 onChange={(e) =>
-                  setForm({ ...form, yearsExperience: e.target.value })
+                  updateForm("professional", {
+                    yearsExperience: e.target.value ? Number(e.target.value) : undefined
+                  })
                 }
               />
             </div>
@@ -58,32 +86,23 @@ const Professional = ({ onNext, onBack, onChange }) => {
           <label htmlFor="">Company Name</label>
           <Input
             type="text"
+            value={data.companyName || ""}
             placeholder="Vortex"
-            className="w-full border border-gray-400 rounded-md px-4 py-2"
-            onChange={(e) => setForm({ ...form, companyName: e.target.value })}
+            className={inputClass}
+            onChange={(e) =>
+              updateForm("professional", { companyName: e.target.value })
+            }
           />
           <label htmlFor="">Website</label>
           <Input
             type="text"
+            value={data.website || ""}
             placeholder="https://www.example.com"
-            className="w-full border border-gray-400 rounded-md px-4 py-2"
-            onChange={(e) => setForm({ ...form, website: e.target.value })}
+            className={inputClass}
+            onChange={(e) =>
+              updateForm("professional", { website: e.target.value })
+            }
           />
-        </div>
-
-        <div className="flex justify-between mt-4">
-          <button onClick={onBack} className="border px-6 py-2 rounded-md">
-            Back
-          </button>
-          <button
-            onClick={() => {
-              onChange({ form });
-              onNext();
-            }}
-            className="bg-neutral-800 text-white px-6 py-2 rounded-md"
-          >
-            Continue
-          </button>
         </div>
       </div>
     </AnimateStep>

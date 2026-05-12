@@ -12,7 +12,7 @@ import { navLinks } from "@/lib/navLinks";
 import { useAuth } from "@/context/AuthContext";
 import Logout from "@/components/auth/Logout";
 import ProfileDropDown from "../ui/ProfileDropDown";
-import Loader from "../ui/Loader";
+
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -59,7 +59,7 @@ const Navbar = () => {
     pathname === href || pathname?.startsWith(href + "/");
 
   return (
-    <nav className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-md">
+    <nav className="sticky top-0 z-50 bg-white/10 backdrop-blur-md p-4">
       <div className="mx-auto max-w-full px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between gap-8">
           {/* Logo */}
@@ -110,13 +110,13 @@ const Navbar = () => {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
                         transition={{ duration: 0.3 }}
-                        className="absolute top-full left-0 mt-2 w-48 rounded-md shadow-lg z-10"
+                        className="absolute top-full left-0 mt-2 w-48 shadow-lg z-10 bg-white rounded-lg"
                       >
                         {link.subLinks.map((sub) => (
                           <Link
                             key={sub.name}
                             href={`${link.href}/${sub.href}`}
-                            className={`block px-4 py-2 text-sm bg-white transition hover:bg-gray-100 ${
+                            className={`block px-4 py-2 text-sm transition hover:bg-gray-100 ${
                               isActive(`${link.href}/${sub.href}`)
                                 ? "text-primary font-semibold"
                                 : "text-gray-700"
@@ -168,12 +168,12 @@ const Navbar = () => {
             {!user && !loading && (
               <Link
                 href="/sign-in"
-                className="px-4 py-2 bg-neutral-800 rounded-md text-white"
+                className="px-4 py-2 bg-neutral-800 rounded-md text-white shadow-md shadow-black/70"
               >
                 Login
               </Link>
             )}
-            {loading && <Loader />}
+            {loading &&  <div className="w-10 h-10 bg-stone-200 animate-pulse rounded-full shadow-md" />}
 
             {user && (
               <ProfileDropDown

@@ -11,7 +11,7 @@ export const getCompanyApplications = async () => {
   }
 };
 export const getCompanyApplicationById = async (applicationId: string) => {
-    try {
+  try {
     const res = await api.get(`${baseUrl}/${applicationId}`);
     return res.data;
   } catch (error) {
@@ -19,7 +19,7 @@ export const getCompanyApplicationById = async (applicationId: string) => {
   }
 };
 export const verifyApplicationDocument = async (docId: string) => {
-    try {
+  try {
     const res = await api.patch(`${baseUrl}/doc/${docId}`);
     return res.data;
   } catch (error) {
@@ -27,7 +27,7 @@ export const verifyApplicationDocument = async (docId: string) => {
   }
 };
 export const approveCompanyApplication = async (applicationId: string) => {
-    try {
+  try {
     const res = await api.patch(`${baseUrl}/${applicationId}/approve`);
     return res.data;
   } catch (error) {
@@ -35,7 +35,7 @@ export const approveCompanyApplication = async (applicationId: string) => {
   }
 };
 export const rejectCompanyApplication = async (applicationId: string) => {
-    try {
+  try {
     const res = await api.patch(`${baseUrl}/${applicationId}/reject`);
     return res.data;
   } catch (error) {
@@ -44,7 +44,7 @@ export const rejectCompanyApplication = async (applicationId: string) => {
 };
 
 export const createCompanyApplication = async () => {
-    try {
+  try {
     const res = await api.post(`${baseUrl}`);
     return res.data;
   } catch (error) {
@@ -52,31 +52,40 @@ export const createCompanyApplication = async () => {
   }
 };
 export const getMyCompanyApplication = async () => {
-    try {
+  try {
     const res = await api.get(`${baseUrl}`);
     return res.data;
   } catch (error) {
     apiError(error);
   }
 };
-export const updateCompanyApplication = async () => {
-    try {
-    const res = await api.put(`${baseUrl}`);
+export const updateCompanyApplication = async (payload: any) => {
+  try {
+    const res = await api.put(`${baseUrl}`, payload);
     return res.data;
   } catch (error) {
     apiError(error);
   }
 };
-export const uploadCompanyDocument = async (type: CompanyDocumentType) => {
-    try {
-    const res = await api.post(`${baseUrl}/doc/${type}`);
+export const uploadCompanyDocument = async (
+  type: CompanyDocumentType,
+  file: File,
+) => {
+  try {
+    const form = new FormData();
+    form.append("file", file);
+    const res = await api.post(`${baseUrl}/doc/${type}`, form, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return res.data;
   } catch (error) {
     apiError(error);
   }
 };
 export const deleteCompanyDocument = async (type: CompanyDocumentType) => {
-    try {
+  try {
     const res = await api.delete(`${baseUrl}/doc/${type}`);
     return res.data;
   } catch (error) {
@@ -84,7 +93,7 @@ export const deleteCompanyDocument = async (type: CompanyDocumentType) => {
   }
 };
 export const deleteCompanyApplication = async () => {
-    try {
+  try {
     const res = await api.delete(`${baseUrl}/delete`);
     return res.data;
   } catch (error) {
@@ -92,7 +101,7 @@ export const deleteCompanyApplication = async () => {
   }
 };
 export const submitCompanyApplication = async () => {
-    try {
+  try {
     const res = await api.post(`${baseUrl}/submit`);
     return res.data;
   } catch (error) {

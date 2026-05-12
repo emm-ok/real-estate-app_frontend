@@ -1,8 +1,16 @@
 import { Listing } from "@/types";
 import ListingCard from "./ListingCard";
 
-export default function ListingGrid({ listings }: { listings: Listing[] }) {
-  if (listings?.length == 0) {
+export default function ListingGrid({ listings }: { listings?: Listing[] }) {
+  if (!Array.isArray(listings)) {
+    return (
+      <div className="text-center py-20 text-gray-500">
+        Something went wrong please try again
+      </div>
+    );
+  }
+
+  if (listings.length === 0) {
     return (
       <div className="text-center py-20 text-gray-500">
         No listings found.

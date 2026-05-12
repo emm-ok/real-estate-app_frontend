@@ -2,7 +2,7 @@ import React from "react";
 
 const StepLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="rounded-2xl shadow-sm p-12 w-full overflow-hidden">
+    <div className="w-full p-4 shadow-sm overflow-hidden">
         {children}
     </div>
   );

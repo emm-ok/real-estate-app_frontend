@@ -11,7 +11,7 @@ export const getAllApplications = async () => {
   }
 };
 export const getApplicationById = async (applicationId: string) => {
-    try {
+  try {
     const res = await api.get(`${baseUrl}/${applicationId}`);
     return res.data;
   } catch (error) {
@@ -19,7 +19,7 @@ export const getApplicationById = async (applicationId: string) => {
   }
 };
 export const verifyApplicationDocument = async (docId: string) => {
-    try {
+  try {
     const res = await api.patch(`${baseUrl}/doc/${docId}`);
     return res.data;
   } catch (error) {
@@ -27,7 +27,7 @@ export const verifyApplicationDocument = async (docId: string) => {
   }
 };
 export const approveAgentApplication = async (applicationId: string) => {
-    try {
+  try {
     const res = await api.patch(`${baseUrl}/${applicationId}/approve`);
     return res.data;
   } catch (error) {
@@ -35,7 +35,7 @@ export const approveAgentApplication = async (applicationId: string) => {
   }
 };
 export const rejectAgentApplication = async (applicationId: string) => {
-    try {
+  try {
     const res = await api.patch(`${baseUrl}/${applicationId}/reject`);
     return res.data;
   } catch (error) {
@@ -44,7 +44,7 @@ export const rejectAgentApplication = async (applicationId: string) => {
 };
 
 export const createAgentApplication = async () => {
-    try {
+  try {
     const res = await api.post(`${baseUrl}`);
     return res.data;
   } catch (error) {
@@ -52,31 +52,40 @@ export const createAgentApplication = async () => {
   }
 };
 export const getMyAgentApplication = async () => {
-    try {
+  try {
     const res = await api.get(`${baseUrl}`);
     return res.data;
   } catch (error) {
     apiError(error);
   }
 };
-export const updateAgentApplication = async () => {
-    try {
-    const res = await api.put(`${baseUrl}`);
+export const updateAgentApplication = async (payload: any) => {
+  try {
+    const res = await api.put(`${baseUrl}`, payload);
     return res.data;
   } catch (error) {
     apiError(error);
   }
 };
-export const uploadAgentDocument = async (type: AgentDocumentType) => {
-    try {
-    const res = await api.post(`${baseUrl}/doc/${type}`);
+export const uploadAgentDocument = async (
+  type: AgentDocumentType,
+  file: File,
+) => {
+  try {
+    const form = new FormData();
+    form.append("file", file);
+    const res = await api.post(`${baseUrl}/doc/${type}`, form, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return res.data;
   } catch (error) {
     apiError(error);
   }
 };
 export const deleteAgentDocument = async (type: AgentDocumentType) => {
-    try {
+  try {
     const res = await api.delete(`${baseUrl}/doc/${type}`);
     return res.data;
   } catch (error) {
@@ -84,7 +93,7 @@ export const deleteAgentDocument = async (type: AgentDocumentType) => {
   }
 };
 export const deleteAgentApplication = async () => {
-    try {
+  try {
     const res = await api.delete(`${baseUrl}/delete`);
     return res.data;
   } catch (error) {
@@ -92,7 +101,7 @@ export const deleteAgentApplication = async () => {
   }
 };
 export const submitAgentApplication = async () => {
-    try {
+  try {
     const res = await api.post(`${baseUrl}/submit`);
     return res.data;
   } catch (error) {

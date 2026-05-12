@@ -1,57 +1,39 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { toast } from "sonner";
 import Skeleton from "../ui/Skeleton";
-import { createAgentApplication, getMyAgentApplication } from "@/lib/agent-application";
-import Loader from "../ui/Loader";
-import { useAuth } from "@/context/AuthContext";
-import { AgentApplication } from "@/types";
+import {
+  createAgentApplication,
+} from "@/lib/agent-application";
+import { useAgentApplication } from "@/context/AgentApplicationContext";
+import { toast } from "sonner";
 
-const StartButton = ({ onStageChange }: { onStageChange: (stage: "requirements" | "application") => void }) => {
-  const [application, setApplication] = useState<AgentApplication | null>(null);
-  const [loading, setLoading] = useState(true);
-  const { user } = useAuth();
-
-  useEffect(() => {
-    const fetch = async () => {
-      try {
-        const data = await getMyAgentApplication();
-        console.log("Application", data.application);
-        setApplication(data.application);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetch();
-  }, []);
+const StartButton = ({
+  onStageChange,
+}: {
+  onStageChange: (stage: "requirements" | "application") => void;
+}) => {
+  const { application, loading, setLoading } = useAgentApplication();
 
   const blocked = ["PENDING", "APPROVED"];
-
   const status = application?.status;
   const isBlocked = status !== undefined && blocked.includes(status);
 
   const handleStart = async () => {
     try {
-      // if (application) {
-      //   if (isBlocked) {
-      //     toast.info(`Application ${status}`);
-      //   }
-      //   // router.push(`/agent-application?app=${application.id}`);
-      //   console.log("Application",application);
-      //   console.log("ApplicationId",application.id);
-      //   onStageChange("application");
-      //   return;
-      // }
-      // const res = await createAgentApplication();
-      // router.push(`/agent-application?app=${res.id}`)
+      if (application) {
+        if (isBlocked) {
+          toast.info(`Application ${status}`);
+        }
+        onStageChange("application");
+        return;
+      }
+      await createAgentApplication();
       onStageChange("application");
-      // console.log(res.id);
-    } finally {
-      setTimeout(() => {
+    } catch(error: any){
+      console.error(error);
+    } 
+    finally {
         setLoading(false);
-      }, 3000);
     }
   };
 
@@ -59,37 +41,44 @@ const StartButton = ({ onStageChange }: { onStageChange: (stage: "requirements" 
     return (
       <div className="flex flex-col justify-center items-center gap-6 mt-15 shadow p-6">
         <Skeleton className="w-50 h-3" />
-        <Skeleton className="w-175 h-12" />
+        <Skeleton className="w-96 md:w-175 h-12" />
       </div>
     );
   }
 
   return (
-    <div className="bg-white rounded-2xl p-8 shadow text-center space-y-4">
-      <p className="text-gray-600">Ready to start your verification</p>
+    <div className="bg-neutral-900 text-white rounded-2xl p-6 flex flex-col justify-between">
+      <div>
+        <h3 className="text-lg font-semibold">Ready to get verified?</h3>
+        <p className="text-sm text-neutral-400 mt-2">
+          Start your application and unlock access to premium listings and
+          clients.
+        </p>
+      </div>
 
       <button
-        onClick={handleStart}
-        disabled={isBlocked}
-        className={`w-full py-4 rounded-xl 
-                font-medium text-white transition-all 
-                ${
-                  isBlocked
-                    ? "opacity-50 cursor-not-allowed"
-                    : "bg-neutral-800 hover:scale-[1.02]"
-                }`}
-      >
-        {!application && "Start Application"}
-        {loading && <Loader text="Redirecting..." />}
-        {status === "DRAFT" && "Continue Application"}
-        {status === "PENDING" && "Under Review"}
-        {status === "APPROVED" && "Approved"}
-        {status === "REJECTED" && "Rejected"}
-      </button>
+      onClick={handleStart}
+      disabled={isBlocked}
+      className={`mt-6 w-full py-3 rounded-xl font-medium transition
+        ${
+          isBlocked
+            ? "bg-white/20 cursor-not-allowed"
+            : "bg-white text-black hover:scale-[1.02]"
+        }`}
+    >
+      {!application && "Start Registration"}
+      {loading && "Redirecting..."}
+      {status === "DRAFT" && "Continue Registration"}
+      {status === "PENDING" && "Under Review"}
+      {status === "APPROVED" && "Verified"}
+      {status === "REJECTED" && "Rejected"}
+    </button>
 
-      {isBlocked && (
-        <p className="text-xs text-gray-400">Application already active</p>
-      )}
+    {isBlocked && (
+      <p className="text-xs text-slate-400 mt-3">
+        Application is currently in progress
+      </p>
+    )}
     </div>
   );
 };
