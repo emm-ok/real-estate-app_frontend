@@ -5,33 +5,19 @@ import { SlidersHorizontal } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useListing } from "@/hooks/useListing";
 
 interface Props {
   onFilter: (filters: FilterOptions) => void;
 }
 
 const type = ["Apratment", "House", "Villa", "Commercial"];
+
 export default function ListingFilters({ onFilter }: Props) {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const { filters, setFilters } = useListing();
 
   const [openFilter, setOpenFilter] = useState(false);
-  const [filters, setFilters] = useState<FilterOptions>({
-    search: searchParams?.get("search") || "",
-    type: (searchParams?.get("type") as ListingType) || undefined,
-    bedrooms: searchParams?.get("bedrooms")
-      ? Number(searchParams.get("bedrooms"))
-      : undefined,
-    bathrooms: searchParams?.get("bathrooms")
-      ? Number(searchParams.get("bathrooms"))
-      : undefined,
-    minPrice: searchParams?.get("minPrice")
-      ? Number(searchParams.get("minPrice"))
-      : undefined,
-    maxPrice: searchParams?.get("maxPrice")
-      ? Number(searchParams.get("maxPrice"))
-      : undefined,
-  });
 
   const updateFilter = (key: keyof FilterOptions, value: any) => {
     setFilters((prev) => ({ ...prev, [key]: value || undefined }));

@@ -84,7 +84,7 @@ export const AgentApplicationProvider: React.FC<{
         ...prev,
         professional: {
           ...app.professional,
-          specialization: app.professional?.specialization || [],
+          specialization: app.professional?.specialization || [], 
         },
         documents: app.documents || {},
       }));
@@ -164,10 +164,10 @@ export const AgentApplicationProvider: React.FC<{
 
       setFormData((prev) => ({
         ...prev,
-        documents: (prev.documents || []).filter((doc) => doc.type !== type),
+        documents: (prev.documents || []).filter((doc: any) => doc.type !== type),
       }));
 
-      setLocalDocs((prev) => {
+      setLocalDocs((prev: any) => {
         const copy = { ...prev };
         delete copy[type];
         return copy;

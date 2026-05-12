@@ -38,7 +38,7 @@ const packages = [
 
 const BecomeAgentPage = () => {
   const [stage, setStage] = useState<"requirements" | "application">(
-    "requirements",
+    "application",
   );
 
   return (

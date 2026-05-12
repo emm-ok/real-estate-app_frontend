@@ -13,7 +13,7 @@ export default function ListingCard({ listing }: { listing: Listing }) {
       {/* Image */}
       <div className="relative w-full h-56 overflow-hidden">
         <Image
-          src={image}
+          src={listing.media[0]?.url || image}
           alt={listing.title}
           fill
           className="object-cover group-hover:scale-105 transition duration-300"

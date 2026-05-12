@@ -38,7 +38,6 @@
 .bg-primary {
   background-color: var(--text-primary);
 }
-
 body {
   font-family: var(--font-heading);
 }

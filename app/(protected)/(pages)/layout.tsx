@@ -6,9 +6,9 @@ import React from 'react'
 const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
-    <Navbar />
+    {/* <Navbar /> */}
     <MainAnimate>{children}</MainAnimate>
-    <Footer />
+    {/* <Footer /> */}
     </>
   )
 }

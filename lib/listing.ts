@@ -1,4 +1,4 @@
-import { FilterOptions, Listing, ListingType } from "@/types";
+import { FilterOptions, Listing } from "@/types";
 import { api, apiError } from "./api";
 
 export const createListing = async () => {

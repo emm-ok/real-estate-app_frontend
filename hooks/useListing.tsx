@@ -9,41 +9,44 @@ export const useListing = () => {
   const [loading, setLoading] = useState(true);
   const searchParams = useSearchParams();
 
+  const [filters, setFilters] = useState<FilterOptions>({
+    search: searchParams?.get("search") || undefined,
+    type: (searchParams?.get("type") || undefined) as ListingType | undefined,
+    bedrooms: searchParams?.get("bedrooms")
+      ? Number(searchParams.get("bedrooms"))
+      : undefined,
+    bathrooms: searchParams?.get("bathrooms")
+      ? Number(searchParams.get("bathrooms"))
+      : undefined,
+    minPrice: searchParams?.get("minPrice")
+      ? Number(searchParams.get("minPrice"))
+      : undefined,
+    maxPrice: searchParams?.get("maxPrice")
+      ? Number(searchParams.get("maxPrice"))
+      : undefined,
+  });
+
   const fetchListings = async (params: FilterOptions) => {
     setLoading(true);
 
     try {
       const data = await getAllListings(params);
       setListings(Array.isArray(data) ? data : []);
-      console.log("Listings", data);
+      // console.log("Listings", data);
     } finally {
       setLoading(false);
     }
   };
-
+  
   useEffect(() => {
-    const filters: FilterOptions = {
-      search: searchParams?.get("search") || undefined,
-      type: (searchParams?.get("type") || undefined) as ListingType | undefined,
-      bedrooms: searchParams?.get("bedrooms")
-        ? Number(searchParams.get("bedrooms"))
-        : undefined,
-      bathrooms: searchParams?.get("bathrooms")
-        ? Number(searchParams.get("bathrooms"))
-        : undefined,
-      minPrice: searchParams?.get("minPrice")
-        ? Number(searchParams.get("minPrice"))
-        : undefined,
-      maxPrice: searchParams?.get("maxPrice")
-        ? Number(searchParams.get("maxPrice"))
-        : undefined,
-    };
     fetchListings(filters);
   }, [searchParams]);
 
   return {
     fetchListings,
     listings,
-    loading
+    loading,
+    filters,
+    setFilters,
   };
 };
